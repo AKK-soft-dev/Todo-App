@@ -2,7 +2,16 @@
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    container: {
+      center: true,
+      padding: "0.5rem",
+    },
+    extend: {
+      colors: {
+        default: "#f9fafb",
+        paper: "#ffffff",
+      },
+    },
   },
   plugins: [],
 };
