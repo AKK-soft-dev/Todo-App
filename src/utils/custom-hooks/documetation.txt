@@ -1,0 +1,5 @@
+Aung Ko Ko [03/10/2023]
+
+Library -> vw-detector (we can use it to apply viewport specific features)
+
+- useSideMenuToggler hook is to simplify the process of handling responsive thing and toggling side menu. Open browser dev tool and resize the browser window. You will notice how I handled responsive things.

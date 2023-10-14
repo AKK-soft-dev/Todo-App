@@ -13,3 +13,15 @@
     @apply bg-default;
   }
 }
+
+@layer utilities {
+  .w-200-sidebar {
+    @apply w-[200px];
+  }
+  .open-side_menu {
+    @apply lg:ml-[calc(224px)];
+  }
+  .slide-out {
+    @apply -translate-x-[150%];
+  }
+}

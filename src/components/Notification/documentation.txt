@@ -1,0 +1,7 @@
+Aung Ko Ko [10/03/2023]
+
+Components
+==========
+
+- Notification - to handle and display the incoming realtime messages.
+- NotificationItem - to separate concern
