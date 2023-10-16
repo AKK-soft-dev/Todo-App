@@ -1,0 +1,6 @@
+Aung Ko Ko [10/03/2023]
+
+Component
+=========
+
+- MainContent - as the name implied, MainContent is to display main contents inside a shared layout across different routes.

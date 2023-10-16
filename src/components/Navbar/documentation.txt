@@ -1,0 +1,7 @@
+Aung Ko Ko [10/03/2023]
+
+Components
+==========
+
+- Navbar - responsive navigation bar.
+- SideMenu - for easy updating of side menu's UI without messing with elements in Navbar.
