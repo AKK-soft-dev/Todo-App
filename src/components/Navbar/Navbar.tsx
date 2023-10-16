@@ -1,12 +1,11 @@
-import Breadcrumb from "../Breadcrumb/Breadcrumb";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiSearch } from "react-icons/hi";
-import { BsFillPersonFill, BsBellFill } from "react-icons/bs";
+import { BsBellFill } from "react-icons/bs";
 import { CgMenuRight } from "react-icons/cg";
 import SideMenu from "./SideMenu";
 import { useCallback, useEffect, useState } from "react";
 import Notification from "../Notification/Notification";
-import Logo from "../Logo/Logo";
+import Logo from "../reusable/Logo/Logo";
 
 const Navbar = ({
   openSideMenu,
@@ -37,7 +36,7 @@ const Navbar = ({
   return (
     <header className={`relative text-base transition-all duration-300`}>
       <SideMenu openSideMenu={openSideMenu} toggleSideMenu={toggleSideMenu} />
-      <nav className="fixed z-10 bg-default h-16  top-0 left-0 right-0 flex items-center justify-between px-4 lg:px-5 shadow">
+      <nav className="fixed z-50 bg-default h-16  top-0 left-0 right-0 flex items-center justify-between px-4 lg:px-5 shadow">
         <div className="flex items-center">
           <Logo />
         </div>

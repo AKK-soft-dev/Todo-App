@@ -25,3 +25,15 @@
     @apply -translate-x-[150%];
   }
 }
+
+.react-datepicker__input-container {
+  @apply flex items-center box-border bg-white rounded p-2 duration-200 border border-black/30 focus-within:border-black/60 !important;
+}
+
+.react-datepicker__view-calendar-icon input {
+  @apply p-0 outline-none !important;
+}
+
+.react-datepicker__calendar-icon {
+  @apply static py-0 px-1 !important;
+}

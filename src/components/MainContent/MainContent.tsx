@@ -1,3 +1,6 @@
+import autoAnimate from "@formkit/auto-animate";
+import { useRef, useEffect } from "react";
+
 const MainContent = ({
   expand,
   children,
@@ -5,9 +8,16 @@ const MainContent = ({
   expand: boolean;
   children: React.ReactNode;
 }) => {
+  const parent = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, []);
+
   return (
     <main
-      className={`pt-16 px-4 transition-all duration-300 ${
+      ref={parent}
+      className={`pt-16 px-4 transition-all duration-300 overflow-x-hidden ${
         expand ? `open-side_menu` : ""
       }`}
     >

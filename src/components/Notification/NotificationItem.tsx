@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { BsFillClockFill } from "react-icons/bs";
 
-const NotificationItem = ({ linkTo, img_path, message, timeDistance }) => {
+const NotificationItem = ({ linkTo, img_path, message, timeDistance }: any) => {
   return (
     <Link
       to={linkTo}
