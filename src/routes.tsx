@@ -10,6 +10,10 @@ const routes = () => {
     <Routes>
       <Route path="/" element={<HomePage />}></Route>
       <Route path="/personal" element={<CategoryDetailPage />}></Route>
+      <Route
+        path="/categories/:categoryId"
+        element={<CategoryDetailPage />}
+      ></Route>
       <Route path="/create" element={<CreateTodoPage />}></Route>
       <Route path="/update" element={<UpdateTodoPage />}></Route>
       <Route path="/detail" element={<TodoDetail />}></Route>
