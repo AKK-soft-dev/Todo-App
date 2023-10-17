@@ -32,6 +32,7 @@ export const initialCategoryData: EntityState<RootCategoryType> = {
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
       createdAt: "12/03/2023",
+      todoList: ["a6_d5CzR5OrJiHe233qzg"],
     },
     "fKE-LveMsiLFGoj4_XbQb": {
       id: "fKE-LveMsiLFGoj4_XbQb",

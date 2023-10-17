@@ -1,17 +1,17 @@
 import { HiChevronRight } from "react-icons/hi";
 import { AiOutlineDelete, AiTwotoneCalendar } from "react-icons/ai";
-import { TodoType } from "./types";
 import Checkbox from "../Checkbox/Checkbox";
 import { formatDateToStr } from "../../../utils/formatDate";
+import { TodoType } from "../../../redux/features/featureTypes";
 
 const TodoItem = ({
-  data: { title, description, dueDate },
+  data: { title, description, dueDate, done },
 }: {
   data: TodoType;
 }) => {
   return (
     <article className="relative flex p-5 space-x-2 rounded hover:bg-slate-200 duration-200 cursor-pointer">
-      <Checkbox id="checked" label="" defaultChecked />
+      <Checkbox id="checked" label="" checked={done} onChange={() => {}} />
       <div className="flex-1">
         <h2 className="font-semibold">{title}</h2>
         <p className="text-black/60 block text-sm font-medium truncate max-w-[150px] md:max-w-[250px]">

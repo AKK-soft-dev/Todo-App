@@ -15,9 +15,8 @@ const todoSlice = createSlice({
   },
 });
 
-export const { selectAll: selectAllTodo } = todoAdapter.getSelectors<RootState>(
-  (state) => state.todoList
-);
+export const { selectAll: selectAllTodo, selectById: selectTodoById } =
+  todoAdapter.getSelectors<RootState>((state) => state.todoList);
 
 export const { addTodo } = todoSlice.actions;
 

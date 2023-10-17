@@ -43,6 +43,15 @@ export const initialSubCategoryData: EntityState<SubCategoryType> = {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
       parentId: "vEkbg08U3xIOQuDm6x050",
       createdAt: "12/03/2023",
+      subCategories: ["3jGw3F699u1_h23HDN9xS8W"],
+    },
+    "3jGw3F699u1_h23HDN9xS8W": {
+      id: "3jGw3F699u1_h23HDN9xS8W",
+      name: "Demo Category 5",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
+      parentId: "3jGw3F699u1bKvDN9xS8W",
+      createdAt: "12/03/2023",
     },
   },
 };

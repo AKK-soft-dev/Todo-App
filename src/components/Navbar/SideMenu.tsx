@@ -7,14 +7,6 @@ import CategoryFormModal from "../reusable/CategoryFormModal.tsx/CategoryFormMod
 import { useAppSelector } from "../../redux/hooks";
 import { selectAllCategories } from "../../redux/features/category/categorySlice";
 
-const categorries = [
-  { path: "/personal", name: "Personal" },
-  { path: "/create", name: "School" },
-  { path: "/update", name: "Market" },
-  { path: "/detail", name: "Dentist" },
-  { path: "/pills", name: "Pills" },
-];
-
 const SideMenu = ({
   openSideMenu,
   toggleSideMenu,
@@ -35,7 +27,7 @@ const SideMenu = ({
   };
 
   const toggle = () => {
-    if (VW.matchesMediaQuery(VW.breakpoints.down("xl"))) {
+    if (VW.matchesMediaQuery(VW.breakpoints.down("lg"))) {
       toggleSideMenu();
     }
   };
@@ -48,7 +40,7 @@ const SideMenu = ({
             : `w-200-sidebar lg:w-0 slide-out lg:translate-x-0`
         }`}
       >
-        <div className="bg-default relative w-full text-black h-full px-4 py-5 z-50 whitespace-nowrap">
+        <div className="bg-default relative w-full text-black h-full px-4 py-5  whitespace-nowrap">
           <div
             className="absolute top-4 left-full lg:hidden text-white bg-black p-3 text-xl shadow"
             onClick={toggleSideMenu}

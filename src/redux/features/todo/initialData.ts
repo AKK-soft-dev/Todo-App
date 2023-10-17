@@ -16,8 +16,9 @@ export const initialTodoData: EntityState<TodoType> = {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
       parentId: "n4kfA1mTlozkS1ZJgXh2F",
       level: "high",
-      createdAt: "13/02/2023",
+      createdAt: "02/13/2023",
       dueDate: "12/12/2023",
+      done: false,
     },
     aOOuRi5HhqqfVDlzSv6rb: {
       id: "aOOuRi5HhqqfVDlzSv6rb",
@@ -26,8 +27,9 @@ export const initialTodoData: EntityState<TodoType> = {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
       parentId: "n4kfA1mTlozkS1ZJgXh2F",
       level: "high",
-      createdAt: "13/02/2023",
-      dueDate: "12/11/2023",
+      createdAt: "02/24/2023",
+      dueDate: "11/11/2023",
+      done: false,
     },
     "F5tiwu-xKAy-vh8MAfiLD": {
       id: "F5tiwu-xKAy-vh8MAfiLD",
@@ -36,8 +38,9 @@ export const initialTodoData: EntityState<TodoType> = {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
       parentId: "n4kfA1mTlozkS1ZJgXh2F",
       level: "low",
-      createdAt: "13/02/2023",
-      dueDate: "22/12/2023",
+      createdAt: "02/13/2023",
+      dueDate: "12/24/2023",
+      done: true,
     },
     a6Gd5CzR5OrJiHXQWcqzg: {
       id: "a6Gd5CzR5OrJiHXQWcqzg",
@@ -48,6 +51,18 @@ export const initialTodoData: EntityState<TodoType> = {
       level: "medium",
       createdAt: "13/04/2023",
       dueDate: "12/12/2023",
+      done: false,
+    },
+    a6_d5CzR5OrJiHe233qzg: {
+      id: "a6_d5CzR5OrJiHe233qzg",
+      title: "Todo 5",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
+      parentId: "1WltZRVXg9g58xezsZDoe",
+      level: "medium",
+      createdAt: "13/04/2023",
+      dueDate: "12/12/2023",
+      done: false,
     },
   },
 };

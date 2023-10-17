@@ -1,9 +1,45 @@
 import { LuListTodo } from "react-icons/lu";
-import { mock_data } from "../../Home/mock-data";
+import autoAnimate from "@formkit/auto-animate";
+import { useRef, useEffect } from "react";
 import TodoItem from "../../reusable/TodoItem/TodoItem";
 import CreateButton from "../../reusable/Button/CreateButton";
+import { selectTodoById } from "../../../redux/features/todo/todoSlice";
+import { useAppSelector } from "../../../redux/hooks";
+import store, { RootState } from "../../../redux/store";
+import { createSelector } from "@reduxjs/toolkit";
 
-const TodoList = () => {
+const todoIdsSelector = (
+  state: RootState,
+  underRootParent: boolean,
+  parentId: string
+) => {
+  return underRootParent
+    ? state.categories.entities[parentId]?.todoList
+    : state.subCategories.entities[parentId]?.todoList;
+};
+
+const todoListSelector = createSelector([todoIdsSelector], (todoIds) => {
+  return todoIds?.map((todoId) => selectTodoById(store.getState(), todoId));
+});
+
+const TodoList = ({
+  underRootParent,
+  parentId,
+}: {
+  underRootParent: boolean;
+  parentId: string;
+}) => {
+  const parent = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, []);
+
+  const todoList =
+    useAppSelector((state) =>
+      todoListSelector(state, underRootParent, parentId)
+    ) || [];
+
   return (
     <section className="my-10">
       <div className="flex justify-between">
@@ -14,14 +50,21 @@ const TodoList = () => {
         <CreateButton />
       </div>
 
-      <div className="bg-paper my-2 rounded shadow p-2">
-        <ul className="my-2 divide-y-2">
-          {mock_data.todoList.map((todo) => (
-            <li key={todo.id}>
-              <TodoItem data={todo} />
-            </li>
-          ))}
-        </ul>
+      <div ref={parent} className="bg-paper my-2 rounded shadow p-2">
+        {todoList.length > 0 ? (
+          <ul className="my-2 divide-y-2">
+            {todoList.map(
+              (todo) =>
+                todo && (
+                  <li key={todo.id}>
+                    <TodoItem data={todo} />
+                  </li>
+                )
+            )}
+          </ul>
+        ) : (
+          <p className="text-center py-5">No todo here. Create a new one.</p>
+        )}
       </div>
     </section>
   );

@@ -7,6 +7,8 @@ export type TodoType = {
   parentId: string;
   createdAt: string;
   dueDate: string;
+  done: boolean;
+  doneAt?: string;
   level: TodoLevelType;
 };
 

@@ -1,8 +1,9 @@
 export interface CheckboxProps {
   disabled?: boolean;
-  defaultChecked?: boolean;
   id: string;
   label: string;
+  checked: boolean;
+  onChange: () => void;
 }
 
 const Checkbox = (props: CheckboxProps) => (
