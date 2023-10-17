@@ -12,7 +12,7 @@ import useTree from "../../utils/custom-hooks/useTree";
 const CategoryDetailPage = () => {
   const params = useParams();
   const categoryId = params["categoryId"];
-  const rootCategory = useAppSelector((state) =>
+  const currentRootCategory = useAppSelector((state) =>
     selectCategoryById(state, categoryId!)
   );
   const subCategory = useAppSelector((state) =>
@@ -20,9 +20,12 @@ const CategoryDetailPage = () => {
   );
   const parentIdOfSubCategory = subCategory?.parentId;
 
-  const tree = useTree(parentIdOfSubCategory, rootCategory || subCategory!);
+  const tree = useTree(
+    parentIdOfSubCategory,
+    currentRootCategory || subCategory!
+  );
 
-  const underRootCategory = !!rootCategory;
+  const IsCurrentRootCategory = !!currentRootCategory;
 
   return (
     <>
@@ -33,11 +36,15 @@ const CategoryDetailPage = () => {
         <div className="flex flex-col">
           <div className="flex gap-2 items-center">
             <Link
-              to={underRootCategory && rootCategory ? `/` : `/detail`}
+              to={
+                IsCurrentRootCategory && currentRootCategory
+                  ? `/`
+                  : `/categories/${tree[tree.length - 2].id}`
+              }
               className="text-xl font-bold my-2 flex items-center space-x-1 cursor-pointer hover:underline"
             >
               <HiChevronLeft />{" "}
-              <span>{rootCategory?.name || subCategory?.name}</span>
+              <span>{currentRootCategory?.name || subCategory?.name}</span>
             </Link>
             <button className="text-xl">
               <RiEdit2Fill />
@@ -45,7 +52,7 @@ const CategoryDetailPage = () => {
           </div>
 
           <p className="text-sm font-medium text-black/60">
-            {rootCategory?.description || subCategory?.description}
+            {currentRootCategory?.description || subCategory?.description}
           </p>
         </div>
 
@@ -55,10 +62,13 @@ const CategoryDetailPage = () => {
       </div>
 
       <SubCategories
-        underRootParent={underRootCategory}
+        underRootParent={IsCurrentRootCategory}
         parentId={categoryId!}
       />
-      <TodoList underRootParent={underRootCategory} parentId={categoryId!} />
+      <TodoList
+        underRootParent={IsCurrentRootCategory}
+        parentId={categoryId!}
+      />
     </>
   );
 };
