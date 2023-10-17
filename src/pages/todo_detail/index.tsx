@@ -19,7 +19,7 @@ const TodoDetail = () => {
       </div>
       <section>
         <h1 className="text-xl font-bold">{title}</h1>
-        <div className="mt-1 mb-5 flex items-center text-black/60 space-x-1">
+        <div className="mt-1 mb-5 flex items-center text-black/60 space-x-1 font-semibold">
           <span className="px-[2px] py-[1px] border border-black/30 rounded text-xs">
             {level}
           </span>

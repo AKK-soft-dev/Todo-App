@@ -4,15 +4,8 @@ import VW from "vw-detector";
 import { HiChevronRight, HiChevronLeft } from "react-icons/hi";
 import CreateButton from "../reusable/Button/CreateButton";
 import CategoryFormModal from "../reusable/CategoryFormModal.tsx/CategoryFormModal";
-import { mock_data } from "../Home/mock-data";
-
-const pages = [
-  { path: "/personal", name: "Personal" },
-  { path: "/create", name: "School" },
-  { path: "/update", name: "Market" },
-  { path: "/detail", name: "Dentist" },
-  { path: "/pills", name: "Pills" },
-];
+import { useAppSelector } from "../../redux/hooks";
+import { selectAllCategories } from "../../redux/features/category/categorySlice";
 
 const SideMenu = ({
   openSideMenu,
@@ -23,6 +16,8 @@ const SideMenu = ({
 }) => {
   const [categoryFormModalOpen, setCategoryFormModalOpen] = useState(false);
 
+  const rootCategories = useAppSelector(selectAllCategories);
+
   const handleCategoryFormModalToggle = () => {
     setCategoryFormModalOpen((prev) => !prev);
   };
@@ -32,7 +27,7 @@ const SideMenu = ({
   };
 
   const toggle = () => {
-    if (VW.matchesMediaQuery(VW.breakpoints.down("xl"))) {
+    if (VW.matchesMediaQuery(VW.breakpoints.down("lg"))) {
       toggleSideMenu();
     }
   };
@@ -45,7 +40,7 @@ const SideMenu = ({
             : `w-200-sidebar lg:w-0 slide-out lg:translate-x-0`
         }`}
       >
-        <div className="bg-default relative w-full text-black h-full px-4 py-5 z-50 whitespace-nowrap">
+        <div className="bg-default relative w-full text-black h-full px-4 py-5  whitespace-nowrap">
           <div
             className="absolute top-4 left-full lg:hidden text-white bg-black p-3 text-xl shadow"
             onClick={toggleSideMenu}
@@ -57,10 +52,10 @@ const SideMenu = ({
             onClick={handleCategoryFormModalToggle}
           />
           <ul className="text-sm font-medium flex flex-col items-center space-y-1 w-full">
-            {pages.map((page) => (
-              <li className="w-full" key={page.path}>
+            {rootCategories.map(({ id, name }) => (
+              <li className="w-full" key={id}>
                 <NavLink
-                  to={page.path}
+                  to={`/categories/${id}`}
                   onClick={toggle}
                   className={({ isActive }) =>
                     `w-full p-3 flex justify-between items-center hover:bg-slate-200 rounded transition-all ${
@@ -68,7 +63,7 @@ const SideMenu = ({
                     }`
                   }
                 >
-                  {page.name}{" "}
+                  {name}{" "}
                   <span>
                     <HiChevronRight />
                   </span>
