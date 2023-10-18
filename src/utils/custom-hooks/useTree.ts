@@ -12,7 +12,7 @@ const useTree = (
       : [];
     categoryTree.push(currentCategoryOrTodo!);
     return categoryTree;
-  }, [parentCategoryId]);
+  }, [parentCategoryId, currentCategoryOrTodo]);
 
   return tree;
 };

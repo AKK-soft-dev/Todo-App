@@ -13,6 +13,7 @@ import { RootState } from "../../store";
 import { addTodo } from "../todo/todoSlice";
 import { createSubCategory } from "../subCategory/subCategorySlice";
 import { initialCategoryData } from "./initalData";
+import { nanoid } from "nanoid";
 
 const categoryAdapter = createEntityAdapter<RootCategoryType>();
 
@@ -22,7 +23,18 @@ const categorySlice = createSlice({
   name: "category",
   initialState,
   reducers: {
-    createCategory: categoryAdapter.addOne,
+    createCategory: {
+      reducer: categoryAdapter.addOne,
+      prepare: (category: Omit<CategoryType, "id">) => {
+        return {
+          payload: {
+            id: nanoid(),
+            ...category,
+          },
+        };
+      },
+    },
+    updateCategory: categoryAdapter.updateOne,
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -53,7 +65,7 @@ export const {
   selectById: selectCategoryById,
 } = categoryAdapter.getSelectors<RootState>((state) => state.categories);
 
-export const { createCategory } = categorySlice.actions;
+export const { createCategory, updateCategory } = categorySlice.actions;
 
 const categoryReducer = categorySlice.reducer;
 export default categoryReducer;

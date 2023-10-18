@@ -1,4 +1,4 @@
-import { TodoType } from "../TodoItem/types";
+import { TodoType } from "../../../redux/features/featureTypes";
 
 type CreateTodoFormType = {
   type: "create";

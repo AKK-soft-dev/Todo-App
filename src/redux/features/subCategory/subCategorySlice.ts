@@ -7,6 +7,7 @@ import { SubCategoryType, TodoType } from "../featureTypes";
 import { RootState } from "../../store";
 import { addTodo } from "../todo/todoSlice";
 import { initialSubCategoryData } from "./initialData";
+import { nanoid } from "nanoid";
 
 const subCategoryAdapter = createEntityAdapter<SubCategoryType>();
 
@@ -17,16 +18,27 @@ const subCategorySlice = createSlice({
   name: "subCategory",
   initialState,
   reducers: {
-    createSubCategory: (state, action: PayloadAction<SubCategoryType>) => {
-      const parentId = action.payload.parentId;
-      const subCategory = state.entities[parentId];
-      const subCategories = subCategory?.subCategories || [];
-      if (subCategory && !subCategories.includes(action.payload.id)) {
-        subCategory.subCategories = subCategories.concat(action.payload.id);
-      }
+    createSubCategory: {
+      reducer: (state, action: PayloadAction<SubCategoryType>) => {
+        const parentId = action.payload.parentId;
+        const subCategory = state.entities[parentId];
+        const subCategories = subCategory?.subCategories || [];
+        if (subCategory && !subCategories.includes(action.payload.id)) {
+          subCategory.subCategories = subCategories.concat(action.payload.id);
+        }
 
-      subCategoryAdapter.addOne(state, action);
+        subCategoryAdapter.addOne(state, action);
+      },
+      prepare: (subCategory: Omit<SubCategoryType, "id">) => {
+        return {
+          payload: {
+            id: nanoid(),
+            ...subCategory,
+          },
+        };
+      },
     },
+    updateSubCategory: subCategoryAdapter.updateOne,
   },
   extraReducers: (builder) => {
     builder.addCase(addTodo, (state, action: PayloadAction<TodoType>) => {
@@ -45,7 +57,8 @@ export const {
   selectById: selectSubCategoryById,
 } = subCategoryAdapter.getSelectors<RootState>((state) => state.subCategories);
 
-export const { createSubCategory } = subCategorySlice.actions;
+export const { createSubCategory, updateSubCategory } =
+  subCategorySlice.actions;
 
 const subCategoryReducer = subCategorySlice.reducer;
 export default subCategoryReducer;

@@ -8,23 +8,44 @@ import autoAnimate from "@formkit/auto-animate";
 import { TodoFormPropsType } from "./types";
 import { TodoLevelType } from "../TodoItem/types";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { selectCategoryById } from "../../../redux/features/category/categorySlice";
+import { selectSubCategoryById } from "../../../redux/features/subCategory/subCategorySlice";
+import { formatDistanceToNow } from "date-fns";
+import { addTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
 
 const TodoForm = (props: TodoFormPropsType) => {
   const updateFormType = props.type === "update";
 
+  const navigateTo = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [dropDownOpen, setDropDownOpen] = useState(false);
-  const [dueDate, setDueDate] = useState<Date | null>(
-    updateFormType ? new Date(props.todo.dueDate) : null
-  );
 
-  const [level, setLevel] = useState<TodoLevelType>(
-    updateFormType ? props.todo.level : "medium"
-  );
   const [formData, setFormData] = useState({
-    title: updateFormType ? props.todo.title : "",
-    description: updateFormType ? props.todo.description : "",
+    title: updateFormType ? props.todo?.title : "",
+    description: updateFormType ? props.todo?.description : "",
   });
+  const [dueDate, setDueDate] = useState<Date | null>(
+    updateFormType
+      ? props.todo?.dueDate
+        ? new Date(props.todo.dueDate)
+        : null
+      : null
+  );
+  const [level, setLevel] = useState<TodoLevelType>(
+    updateFormType ? props.todo?.level : "medium"
+  );
 
+  // this category will be used when this form is CreateFormType
+  const category = useAppSelector(
+    (state) =>
+      selectCategoryById(state, props.parentId) ||
+      selectSubCategoryById(state, props.parentId)
+  );
+
+  // to animate dropdown
   const parent = useRef<HTMLButtonElement>(null);
 
   const toggleDropDown = () => {
@@ -44,18 +65,64 @@ const TodoForm = (props: TodoFormPropsType) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Todo added!", { autoClose: 3000, position: "top-right" });
+    if (!updateFormType && category && dueDate) {
+      dispatch(
+        addTodo({
+          title: formData.title,
+          description: formData.description,
+          parentId: category.id,
+          createdAt: new Date().toISOString(),
+          dueDate: dueDate.toISOString(),
+          done: false,
+          level,
+        })
+      );
+      navigateTo(`/categories/${category.id}`);
+      toast.success("Todo added!", {
+        autoClose: 3000,
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (updateFormType && dueDate) {
+      dispatch(
+        updateTodo({
+          id: props.todo.id,
+          changes: {
+            title: formData.title,
+            description: formData.description,
+            dueDate: dueDate.toISOString(),
+            done: false,
+            level,
+          },
+        })
+      );
+      updateFormType && navigateTo(`/todo/${props.todo.id}`);
+      toast.success("Todo updated!", {
+        autoClose: 3000,
+        position: "top-right",
+      });
+    }
   };
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current, { duration: 100 });
   }, []);
 
+  if ((updateFormType && !props.todo) || !category) {
+    return (
+      <section className="my-5">
+        <p>Sorry I can't provide you a form. Maybe due to your url.</p>
+      </section>
+    );
+  }
+
   return (
     <section>
       <h1 className="text-xl font-bold my-2 text-center lg:text-start">
         {props.type === "update" ? "Update" : "Create"} Todo{" "}
-        <span className="text-sm">(under {props.parentId})</span>
+        <span className="text-sm">(under {category?.name})</span>
       </h1>
       <div className="mt-5 sm:flex sm:justify-center lg:justify-start">
         <form onSubmit={handleSubmit} className="block sm:inline-flex flex-col">
@@ -135,18 +202,22 @@ const TodoForm = (props: TodoFormPropsType) => {
               className="w-full px-5 py-2 font-medium placeholder:text-black/60 outline-none border border-black/30 focus:border-black/60 duration-200 rounded"
             ></textarea>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mt-5">
             <span className="text-sm font-medium text-black/60">
               {updateFormType ? (
                 <span className="flex items-center space-x-1">
                   <AiFillClockCircle />
-                  <span>{props.todo.createdAt}</span>
+                  <span>
+                    {formatDistanceToNow(new Date(props.todo.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </span>
                 </span>
               ) : (
                 ""
               )}
             </span>
-            <button className="px-5 py-2 bg-black text-white mt-5 hover:bg-black/80 active:bg-black rounded duration-200 inline-block">
+            <button className="px-5 py-2 bg-black text-white hover:bg-black/80 active:bg-black rounded duration-200 inline-block">
               {updateFormType ? "Update" : "Create"}
             </button>
           </div>

@@ -6,7 +6,8 @@ import CreateButton from "../../reusable/Button/CreateButton";
 import { selectTodoById } from "../../../redux/features/todo/todoSlice";
 import { useAppSelector } from "../../../redux/hooks";
 import store, { RootState } from "../../../redux/store";
-import { createSelector } from "@reduxjs/toolkit";
+// import { createSelector } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
 const todoIdsSelector = (
   state: RootState,
@@ -18,9 +19,13 @@ const todoIdsSelector = (
     : state.subCategories.entities[parentId]?.todoList;
 };
 
-const todoListSelector = createSelector([todoIdsSelector], (todoIds) => {
+// const todoListSelector = createSelector([todoIdsSelector], (todoIds) => {
+//   return todoIds?.map((todoId) => selectTodoById(store.getState(), todoId));
+// });
+
+const todoListSelector = (todoIds: string[]) => {
   return todoIds?.map((todoId) => selectTodoById(store.getState(), todoId));
-});
+};
 
 const TodoList = ({
   underRootParent,
@@ -30,15 +35,28 @@ const TodoList = ({
   parentId: string;
 }) => {
   const parent = useRef<HTMLDivElement>(null);
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current);
   }, []);
 
+  // const todoList =
+  //   useAppSelector((state) =>
+  //     todoListSelector(state, underRootParent, parentId)
+  //   ) || [];
+
   const todoList =
-    useAppSelector((state) =>
-      todoListSelector(state, underRootParent, parentId)
-    ) || [];
+    useAppSelector((state) => {
+      const todoIds = todoIdsSelector(state, underRootParent, parentId);
+      return todoListSelector(todoIds!);
+    }) || [];
+
+  const handleNavigate = () => {
+    if (parentId) {
+      navigateTo(`/create?parent=${parentId}`);
+    }
+  };
 
   return (
     <section className="my-10">
@@ -47,7 +65,7 @@ const TodoList = ({
           <LuListTodo />
           <span>Todo</span>
         </h3>
-        <CreateButton />
+        <CreateButton onClick={handleNavigate} />
       </div>
 
       <div ref={parent} className="bg-paper my-2 rounded shadow p-2">

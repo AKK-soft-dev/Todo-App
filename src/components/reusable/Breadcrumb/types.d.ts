@@ -1,6 +1,7 @@
 type LinkInBreadCrumbType = {
   id: string;
-  name: string;
+  name?: string;
+  title?: string;
 };
 
 export type LinksInBreadCrumbType = LinkInBreadCrumbType[];
