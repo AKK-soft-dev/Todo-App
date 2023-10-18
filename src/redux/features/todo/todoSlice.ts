@@ -10,10 +10,14 @@ import { initialTodoData } from "./initialData";
 import { nanoid } from "nanoid";
 import { deleteSubCategory } from "../subCategory/subCategorySlice";
 import { deleteCategory } from "../category/categorySlice";
+import { initialTodoListFromStorage } from "../storageData";
 
 const todoAdapter = createEntityAdapter<TodoType>();
 
-const initialState = initialTodoData || todoAdapter.getInitialState();
+const initialState =
+  initialTodoListFromStorage ||
+  initialTodoData ||
+  todoAdapter.getInitialState();
 
 const todoSlice = createSlice({
   name: "todoList",

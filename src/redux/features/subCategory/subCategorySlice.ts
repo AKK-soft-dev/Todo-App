@@ -10,11 +10,14 @@ import { addTodo, deleteTodo } from "../todo/todoSlice";
 import { initialSubCategoryData } from "./initialData";
 import { nanoid } from "nanoid";
 import { deleteCategory } from "../category/categorySlice";
+import { initialSubCategoriesFromStorage } from "../storageData";
 
 const subCategoryAdapter = createEntityAdapter<SubCategoryType>();
 
 const initialState =
-  initialSubCategoryData || subCategoryAdapter.getInitialState();
+  initialSubCategoriesFromStorage ||
+  initialSubCategoryData ||
+  subCategoryAdapter.getInitialState();
 
 const subCategorySlice = createSlice({
   name: "subCategory",

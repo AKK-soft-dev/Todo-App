@@ -12,10 +12,14 @@ import {
 } from "../subCategory/subCategorySlice";
 import { initialCategoryData } from "./initalData";
 import { nanoid } from "nanoid";
+import { initialCategoriesFromStorage } from "../storageData";
 
 const categoryAdapter = createEntityAdapter<RootCategoryType>();
 
-const initialState = initialCategoryData || categoryAdapter.getInitialState();
+const initialState =
+  initialCategoriesFromStorage ||
+  initialCategoryData ||
+  categoryAdapter.getInitialState();
 
 const categorySlice = createSlice({
   name: "category",

@@ -62,8 +62,6 @@ const TodoList = ({
     }
   };
 
-  console.log(todoList);
-
   return (
     <section className="my-10">
       <div className="flex justify-between">
