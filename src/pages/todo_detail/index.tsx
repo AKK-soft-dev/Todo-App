@@ -2,6 +2,7 @@ import Breadcrumb from "../../components/reusable/Breadcrumb/Breadcrumb";
 import { RiEdit2Fill } from "react-icons/ri";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { formatDateToStr } from "../../utils/formatDate";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -13,10 +14,12 @@ import {
 import useTree from "../../utils/custom-hooks/useTree";
 import { formatDistanceToNow } from "date-fns";
 import { HiChevronLeft, HiTrash } from "react-icons/hi";
+import ConfirmModal from "../../components/reusable/ConfirmModal/ConfirmModal";
 
 const TodoDetail = () => {
   const params = useParams();
   const todoId = params["todoId"];
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const todo = useAppSelector((state) => selectTodoById(state, todoId!));
   const tree = useTree(todo?.parentId, todo!);
   const navigateTo = useNavigate();
@@ -51,6 +54,14 @@ const TodoDetail = () => {
     }
   };
 
+  const toggleConfirmMOdal = () => {
+    setConfirmModalOpen((prev) => !prev);
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModalOpen(false);
+  };
+
   return (
     <>
       <div className="mt-5 mb-3">
@@ -60,7 +71,7 @@ const TodoDetail = () => {
         <>
           <div className="flex justify-end gap-3">
             <button
-              onClick={handleDelete}
+              onClick={toggleConfirmMOdal}
               className="flex space-x-1 items-center px-2 py-1 border border-black hover:text-white rounded font-medium hover:bg-black/80 active:bg-black duration-200"
             >
               <HiTrash /> <span>Delete</span>
@@ -118,6 +129,18 @@ const TodoDetail = () => {
               </span>
             </div>
           </section>
+          <ConfirmModal
+            title="Confirm deletion"
+            body={
+              <>
+                Todo called <span className="font-bold">{todo.title}</span> will
+                be deleted. It can't be undone.
+              </>
+            }
+            open={confirmModalOpen}
+            onClose={closeConfirmModal}
+            onConfirm={handleDelete}
+          />
         </>
       ) : (
         <article className="my-5">

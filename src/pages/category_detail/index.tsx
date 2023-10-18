@@ -2,6 +2,7 @@ import Breadcrumb from "../../components/reusable/Breadcrumb/Breadcrumb";
 import SubCategories from "../../components/CategoryDetail/SubCatagories/SubCategories";
 import TodoList from "../../components/CategoryDetail/TodoList/TodoList";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { HiChevronLeft, HiTrash } from "react-icons/hi";
 import { RiEdit2Fill } from "react-icons/ri";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -16,6 +17,7 @@ import {
 } from "../../redux/features/subCategory/subCategorySlice";
 import useTree from "../../utils/custom-hooks/useTree";
 import CategoryFormModal from "../../components/reusable/CategoryFormModal.tsx/CategoryFormModal";
+import ConfirmModal from "../../components/reusable/ConfirmModal/ConfirmModal";
 
 const CategoryDetailPage = () => {
   const params = useParams();
@@ -25,6 +27,7 @@ const CategoryDetailPage = () => {
   const navigateTo = useNavigate();
 
   const [updateFormModalOpen, setUpdateFormModalOpen] = useState(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   const currentRootCategory = useAppSelector((state) =>
     selectCategoryById(state, categoryId!)
@@ -45,8 +48,16 @@ const CategoryDetailPage = () => {
     setUpdateFormModalOpen((prev) => !prev);
   };
 
+  const toggleConfirmMOdal = () => {
+    setConfirmModalOpen((prev) => !prev);
+  };
+
   const closeUpdateFormModal = () => {
     setUpdateFormModalOpen(false);
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModalOpen(false);
   };
 
   const handleDelete = () => {
@@ -57,6 +68,10 @@ const CategoryDetailPage = () => {
       dispatch(deleteSubCategory(currentSubCategory));
       navigateTo(`/categories/${currentSubCategory.parentId}`);
     }
+    toast.success("Category deleted!", {
+      autoClose: 3000,
+      position: "top-right",
+    });
   };
 
   return (
@@ -85,7 +100,7 @@ const CategoryDetailPage = () => {
                 <RiEdit2Fill />
               </button>
 
-              <button onClick={handleDelete} className="ml-auto text-2xl">
+              <button onClick={toggleConfirmMOdal} className="ml-auto text-2xl">
                 <HiTrash />
               </button>
             </div>
@@ -114,6 +129,21 @@ const CategoryDetailPage = () => {
               category={currentSubCategory || currentRootCategory!}
             />
           )}
+          <ConfirmModal
+            title="Confirm deletion"
+            body={
+              <>
+                Category called{" "}
+                <span className="font-bold">
+                  {(currentRootCategory || currentSubCategory)?.name}
+                </span>{" "}
+                and all of its content will be deleted. It can't be undone.
+              </>
+            }
+            open={confirmModalOpen}
+            onClose={closeConfirmModal}
+            onConfirm={handleDelete}
+          />
         </>
       ) : (
         <article className="my-5">

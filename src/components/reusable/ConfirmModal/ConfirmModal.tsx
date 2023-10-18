@@ -26,8 +26,8 @@ const ConfirmModal = (props: ConfirmModalProps) => {
           <HiX />
         </button>
         <h1 className="text-xl font-bold my-2 text-start">{title}</h1>
-        <p className="text-black/80 font-medium">{body}</p>
-        <div className="mt-5 flex justify-end items-center gap-2">
+        <p className="text-black/80 text-sm font-medium">{body}</p>
+        <div className="mt-7 flex justify-end items-center gap-2">
           <button
             onClick={onClose}
             className="px-2 py-1 border border-black hover:text-white rounded font-medium hover:bg-black/80 active:bg-black duration-200"
@@ -35,7 +35,10 @@ const ConfirmModal = (props: ConfirmModalProps) => {
             Cancel
           </button>
           <button
-            onClick={onConfirm}
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
             className="px-2 py-1 border border-black bg-black text-white rounded font-medium hover:bg-black/80 active:bg-black duration-200"
           >
             Confirm

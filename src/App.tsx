@@ -7,7 +7,6 @@ import VW from "vw-detector";
 import Footer from "./components/Footer/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
-import ConfirmModal from "./components/reusable/ConfirmModal/ConfirmModal";
 
 const upLg = VW.breakpoints.up("lg");
 

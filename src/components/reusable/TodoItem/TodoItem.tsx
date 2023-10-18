@@ -1,4 +1,6 @@
 import { HiChevronRight } from "react-icons/hi";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import { AiOutlineDelete, AiTwotoneCalendar } from "react-icons/ai";
 import Checkbox from "../Checkbox/Checkbox";
 import { formatDateToStr } from "../../../utils/formatDate";
@@ -6,9 +8,12 @@ import { TodoType } from "../../../redux/features/featureTypes";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 
 const TodoItem = ({ data }: { data: TodoType }) => {
   const { id, title, description, dueDate, done } = data;
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+
   const dispatch = useDispatch();
   const handleCheck = () => {
     dispatch(
@@ -21,9 +26,21 @@ const TodoItem = ({ data }: { data: TodoType }) => {
     );
   };
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleDelete = () => {
     dispatch(deleteTodo(data));
+    toast.success("Todo deleted!", {
+      autoClose: 3000,
+      position: "top-right",
+    });
+  };
+
+  const toggleConfirmMOdal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setConfirmModalOpen((prev) => !prev);
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModalOpen(false);
   };
 
   return (
@@ -46,11 +63,23 @@ const TodoItem = ({ data }: { data: TodoType }) => {
         ></Link>
       </div>
       <div className="absolute top-1/2 -translate-y-1/2 right-5 flex space-x-1">
-        <div className="relative z-10" onClick={handleDelete}>
+        <div className="relative z-10" onClick={toggleConfirmMOdal}>
           <AiOutlineDelete />
         </div>
         <HiChevronRight />
       </div>
+      <ConfirmModal
+        title="Confirm deletion"
+        body={
+          <>
+            Todo called <span className="font-bold">{data.title}</span> will be
+            deleted. It can't be undone.
+          </>
+        }
+        open={confirmModalOpen}
+        onClose={closeConfirmModal}
+        onConfirm={handleDelete}
+      />
     </article>
   );
 };
