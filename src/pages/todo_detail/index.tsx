@@ -67,7 +67,7 @@ const TodoDetail = () => {
             </button>
             <button
               onClick={handleNavigate}
-              className="flex space-x-1 items-center px-2 py-1 bg-black text-white rounded font-medium hover:bg-black/80 active:bg-black duration-200"
+              className="flex space-x-1 items-center px-2 py-1 border border-black bg-black text-white rounded font-medium hover:bg-black/80 active:bg-black duration-200"
             >
               <RiEdit2Fill /> <span>Edit</span>
             </button>
