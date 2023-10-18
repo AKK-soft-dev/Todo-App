@@ -7,6 +7,7 @@ const useTree = (
   currentCategoryOrTodo: TreeItem
 ) => {
   const tree = useMemo(() => {
+    // if we are trying to get the parents of rootCategory, we don't need to retrieve as we already got current item.
     const categoryTree = parentCategoryId
       ? treeSelector(store.getState(), parentCategoryId, [])
       : [];

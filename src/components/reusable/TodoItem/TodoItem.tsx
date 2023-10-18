@@ -5,13 +5,10 @@ import { formatDateToStr } from "../../../utils/formatDate";
 import { TodoType } from "../../../redux/features/featureTypes";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updateTodo } from "../../../redux/features/todo/todoSlice";
+import { deleteTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
 
-const TodoItem = ({
-  data: { id, title, description, dueDate, done },
-}: {
-  data: TodoType;
-}) => {
+const TodoItem = ({ data }: { data: TodoType }) => {
+  const { id, title, description, dueDate, done } = data;
   const dispatch = useDispatch();
   const handleCheck = () => {
     dispatch(
@@ -22,6 +19,11 @@ const TodoItem = ({
         },
       })
     );
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(deleteTodo(data));
   };
 
   return (
@@ -43,17 +45,12 @@ const TodoItem = ({
           className="absolute top-0 left-0 right-0 bottom-0"
         ></Link>
       </div>
-      <span className="absolute top-1/2 -translate-y-1/2 right-5 flex space-x-1">
-        <div
-          className="relative z-10"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
+      <div className="absolute top-1/2 -translate-y-1/2 right-5 flex space-x-1">
+        <div className="relative z-10" onClick={handleDelete}>
           <AiOutlineDelete />
         </div>
         <HiChevronRight />
-      </span>
+      </div>
     </article>
   );
 };

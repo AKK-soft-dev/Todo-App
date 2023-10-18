@@ -36,11 +36,15 @@ const SubCategories = ({
   parentId: string;
 }) => {
   const [formModalOpen, setFormModalOpen] = useState(false);
-  const parent = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const listParentRef = useRef<HTMLUListElement>(null);
 
+  const containerEl = containerRef.current;
+  const listParentEl = listParentRef.current;
   useEffect(() => {
-    parent.current && autoAnimate(parent.current);
-  }, []);
+    containerEl && autoAnimate(containerEl);
+    listParentEl && autoAnimate(listParentEl);
+  }, [containerEl, listParentEl]);
 
   const subCategories =
     useAppSelector((state) =>
@@ -65,9 +69,9 @@ const SubCategories = ({
           </h3>
           <CreateButton onClick={toggleFormModal} />
         </div>
-        <div className="bg-paper my-2 rounded shadow p-2" ref={parent}>
+        <div ref={containerRef} className="bg-paper my-2 rounded shadow p-2">
           {subCategories.length > 0 ? (
-            <ul className="my-2 divide-y-2">
+            <ul className="my-2 divide-y-2" ref={listParentRef}>
               {subCategories.map(
                 (subCategory) =>
                   subCategory && (

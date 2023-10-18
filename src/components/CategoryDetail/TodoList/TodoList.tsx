@@ -34,12 +34,16 @@ const TodoList = ({
   underRootParent: boolean;
   parentId: string;
 }) => {
-  const parent = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const listParentRef = useRef<HTMLUListElement>(null);
   const navigateTo = useNavigate();
 
+  const containerEl = containerRef.current;
+  const listParentEl = listParentRef.current;
   useEffect(() => {
-    parent.current && autoAnimate(parent.current);
-  }, []);
+    containerEl && autoAnimate(containerEl);
+    listParentEl && autoAnimate(listParentEl);
+  }, [containerEl, listParentEl]);
 
   // const todoList =
   //   useAppSelector((state) =>
@@ -58,6 +62,8 @@ const TodoList = ({
     }
   };
 
+  console.log(todoList);
+
   return (
     <section className="my-10">
       <div className="flex justify-between">
@@ -68,9 +74,9 @@ const TodoList = ({
         <CreateButton onClick={handleNavigate} />
       </div>
 
-      <div ref={parent} className="bg-paper my-2 rounded shadow p-2">
+      <div ref={containerRef} className="bg-paper my-2 rounded shadow p-2">
         {todoList.length > 0 ? (
-          <ul className="my-2 divide-y-2">
+          <ul className="my-2 divide-y-2" ref={listParentRef}>
             {todoList.map(
               (todo) =>
                 todo && (

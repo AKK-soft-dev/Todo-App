@@ -1,8 +1,15 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { TodoType } from "../featureTypes";
+import {
+  EntityState,
+  PayloadAction,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit";
+import { RootCategoryType, SubCategoryType, TodoType } from "../featureTypes";
 import { RootState } from "../../store";
 import { initialTodoData } from "./initialData";
 import { nanoid } from "nanoid";
+import { deleteSubCategory } from "../subCategory/subCategorySlice";
+import { deleteCategory } from "../category/categorySlice";
 
 const todoAdapter = createEntityAdapter<TodoType>();
 
@@ -24,13 +31,42 @@ const todoSlice = createSlice({
       },
     },
     updateTodo: todoAdapter.updateOne,
+    deleteTodo: (
+      state: EntityState<TodoType>,
+      action: PayloadAction<TodoType>
+    ) => {
+      todoAdapter.removeOne(state, action.payload.id);
+    },
+  },
+  extraReducers: (builder) => {
+    // If the user deletes a root category, we also need to delete all of its todo items
+    builder.addCase(
+      deleteCategory,
+      (state, action: PayloadAction<RootCategoryType>) => {
+        const todoIds = action.payload.todoList;
+        if (todoIds) {
+          todoAdapter.removeMany(state, todoIds);
+        }
+      }
+    );
+
+    // we need to remove all todo of deleted subCategory
+    builder.addCase(
+      deleteSubCategory,
+      (state, action: PayloadAction<SubCategoryType>) => {
+        const todoIdsOfSubCategory = action.payload.todoList;
+        if (todoIdsOfSubCategory) {
+          todoAdapter.removeMany(state, todoIdsOfSubCategory);
+        }
+      }
+    );
   },
 });
 
 export const { selectAll: selectAllTodo, selectById: selectTodoById } =
   todoAdapter.getSelectors<RootState>((state) => state.todoList);
 
-export const { addTodo, updateTodo } = todoSlice.actions;
+export const { addTodo, updateTodo, deleteTodo } = todoSlice.actions;
 
 const todoReducer = todoSlice.reducer;
 export default todoReducer;

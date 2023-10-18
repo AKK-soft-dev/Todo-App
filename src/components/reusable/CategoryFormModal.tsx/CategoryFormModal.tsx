@@ -17,6 +17,7 @@ import {
   selectSubCategoryById,
   updateSubCategory,
 } from "../../../redux/features/subCategory/subCategorySlice";
+import { formatDistanceToNow } from "date-fns";
 
 const CategoryFormModal = (props: CategoryFormPropsType) => {
   const updateFormType = props.type === "update";
@@ -85,11 +86,13 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
               },
             })
       );
+
       toast.success("Category updated!", {
         autoClose: 3000,
         position: "top-right",
       });
     }
+    setFormData({ name: "", description: "" });
     props.onClose();
   };
 
@@ -99,13 +102,13 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
 
   return createPortal(
     <div
-      className={`fixed top-0 left-0 right-0 bottom-0 opacity-0 bg-black/80 transition-all duration-300 z-[100]  ${
-        props.open ? "opacity-100" : "pointer-events-none"
+      className={`fixed top-0 left-0 right-0 bottom-0 scale-0 bg-black/80 transition-all duration-300  z-[100]  ${
+        props.open ? "scale-100" : "pointer-events-none delay-150"
       }`}
     >
       <div
         className={`fixed z-[101] duration-300 scale-0 ${
-          props.open ? "scale-100 " : ""
+          props.open ? "scale-100 delay-150" : ""
         } top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white rounded p-5 min-w-[90%] md:min-w-[500px]`}
       >
         <button
@@ -151,7 +154,12 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
                   {updateFormType ? (
                     <span className="flex items-center space-x-1">
                       <AiFillClockCircle />
-                      <span>{props.category.createdAt}</span>
+                      <span>
+                        {formatDistanceToNow(
+                          new Date(props.category.createdAt),
+                          { addSuffix: true }
+                        )}
+                      </span>
                     </span>
                   ) : (
                     ""
