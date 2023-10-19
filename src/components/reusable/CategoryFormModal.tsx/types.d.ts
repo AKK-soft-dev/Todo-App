@@ -1,4 +1,7 @@
-import { CategoryType } from "../SubCategoryItem/types";
+import {
+  RootCategoryType,
+  SubCategoryType,
+} from "../../../redux/features/featureTypes";
 
 type CreateCategoryFormType = {
   type: "create";
@@ -11,7 +14,8 @@ type UpdateCategoryFormType = {
   type: "update";
   open: boolean;
   onClose: () => void;
-  category: CategoryType;
+  parentId?: string;
+  category: RootCategoryType | SubCategoryType;
 };
 
 export type CategoryFormPropsType =

@@ -16,7 +16,7 @@ const routes = () => {
       ></Route>
       <Route path="/create" element={<CreateTodoPage />}></Route>
       <Route path="/update" element={<UpdateTodoPage />}></Route>
-      <Route path="/detail" element={<TodoDetail />}></Route>
+      <Route path="/todo/:todoId" element={<TodoDetail />}></Route>
     </Routes>
   );
 };

@@ -4,7 +4,8 @@ import { RootState } from "../redux/store";
 
 export type TreeItem = {
   id: string;
-  name: string;
+  name?: string;
+  title?: string;
   parentId?: string;
 };
 
