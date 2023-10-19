@@ -14,7 +14,7 @@ import { initialCategoryData } from "./initalData";
 import { nanoid } from "nanoid";
 import { initialCategoriesFromStorage } from "../storageData";
 
-const categoryAdapter = createEntityAdapter<RootCategoryType>();
+export const categoryAdapter = createEntityAdapter<RootCategoryType>();
 
 const initialState =
   initialCategoriesFromStorage ||

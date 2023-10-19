@@ -4,15 +4,14 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { RootCategoryType, SubCategoryType, TodoType } from "../featureTypes";
+import { SubCategoryType, TodoType } from "../featureTypes";
 import { RootState } from "../../store";
 import { addTodo, deleteTodo } from "../todo/todoSlice";
 import { initialSubCategoryData } from "./initialData";
 import { nanoid } from "nanoid";
-import { deleteCategory } from "../category/categorySlice";
 import { initialSubCategoriesFromStorage } from "../storageData";
 
-const subCategoryAdapter = createEntityAdapter<SubCategoryType>();
+export const subCategoryAdapter = createEntityAdapter<SubCategoryType>();
 
 const initialState =
   initialSubCategoriesFromStorage ||
@@ -72,15 +71,16 @@ const subCategorySlice = createSlice({
   },
   extraReducers: (builder) => {
     // If the user deletes a root category, we also need to delete all of its sub categories
-    builder.addCase(
-      deleteCategory,
-      (state, action: PayloadAction<RootCategoryType>) => {
-        const subCategoryIds = action.payload.subCategories;
-        if (subCategoryIds) {
-          subCategoryAdapter.removeMany(state, subCategoryIds);
-        }
-      }
-    );
+    // builder.addCase(
+    //   deleteCategory,
+    //   (state, action: PayloadAction<RootCategoryType>) => {
+    //     const subCategoryIds = action.payload.subCategories;
+    //     if (subCategoryIds) {
+    //       // subCategoryAdapter.removeMany(state, subCategoryIds);
+    //       deleteSubCategories(state, subCategoryIds);
+    //     }
+    //   }
+    // );
 
     // If the user adds a todo item, we also need to store of that todo's id
     builder.addCase(addTodo, (state, action: PayloadAction<TodoType>) => {
