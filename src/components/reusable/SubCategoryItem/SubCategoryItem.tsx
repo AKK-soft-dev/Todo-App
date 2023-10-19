@@ -31,7 +31,7 @@ const SubCategoryItem = ({ data }: { data: SubCategoryType }) => {
   return (
     <article className="relative flex h-16 rounded hover:bg-slate-200 duration-200 cursor-pointer">
       <h2 className="absolute top-0 left-0 right-0 bottom-0 font-semibold flex items-center p-5">
-        {data.name}
+        <span className="w-[80%] truncate">{data.name}</span>
         <Link
           to={`/categories/${data.id}`}
           className="absolute top-0 left-0 right-0 bottom-0"

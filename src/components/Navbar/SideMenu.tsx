@@ -59,13 +59,13 @@ const SideMenu = ({
                   to={`/categories/${id}`}
                   onClick={toggle}
                   className={({ isActive }) =>
-                    `w-full p-3 flex justify-between items-center hover:bg-slate-200 rounded transition-all ${
+                    `w-full p-3 relative flex justify-between items-center rounded hover:bg-slate-200  transition-all ${
                       isActive ? "bg-slate-200" : ""
                     }`
                   }
                 >
-                  {name}{" "}
-                  <span>
+                  <span className="w-[80%] block truncate">{name}</span>
+                  <span className="absolute right-3">
                     <HiChevronRight />
                   </span>
                 </NavLink>

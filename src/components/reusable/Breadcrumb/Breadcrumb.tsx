@@ -32,12 +32,12 @@ const Breadcrumb = ({
               {index !== lastIndex ? (
                 <Link
                   to={`/categories/${segment.id}`}
-                  className="capitalize font-semibold hover:underline duration-200"
+                  className="capitalize font-semibold hover:underline duration-200 block break-all"
                 >
                   {segment.name}
                 </Link>
               ) : (
-                <span className="capitalize">
+                <span className="capitalize block break-all">
                   {segment.name || segment.title}
                 </span>
               )}

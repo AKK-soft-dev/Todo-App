@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { HiChevronLeft, HiTrash } from "react-icons/hi";
 import { RiEdit2Fill } from "react-icons/ri";
+import { AiFillClockCircle } from "react-icons/ai";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -18,6 +19,7 @@ import {
 import useTree from "../../utils/custom-hooks/useTree";
 import CategoryFormModal from "../../components/reusable/CategoryFormModal.tsx/CategoryFormModal";
 import ConfirmModal from "../../components/reusable/ConfirmModal/ConfirmModal";
+import { formatDistanceToNow } from "date-fns";
 
 const CategoryDetailPage = () => {
   const params = useParams();
@@ -82,17 +84,17 @@ const CategoryDetailPage = () => {
       {currentRootCategory || currentSubCategory ? (
         <>
           <div className="flex flex-col w-full">
-            <div className="flex gap-2 items-center ">
+            <div className="flex gap-2 items-center flex-wrap ">
               <Link
                 to={
                   IsCurrentRootCategory && currentRootCategory
                     ? `/`
                     : `/categories/${tree[tree.length - 2]?.id}`
                 }
-                className="text-xl font-bold my-2 flex items-center space-x-1 cursor-pointer"
+                className="text-xl font-bold flex items-center flex-wrap space-x-1 cursor-pointer"
               >
                 <HiChevronLeft />{" "}
-                <span>
+                <span className="block break-all">
                   {currentRootCategory?.name || currentSubCategory?.name}
                 </span>
               </Link>
@@ -105,7 +107,19 @@ const CategoryDetailPage = () => {
               </button>
             </div>
 
-            <p className="text-sm font-medium text-black/60">
+            <span className="ml-5 flex items-center space-x-1 mb-2 text-black/60 text-xs">
+              <AiFillClockCircle />
+              <span>
+                {formatDistanceToNow(
+                  new Date(
+                    (currentRootCategory || currentSubCategory)!.createdAt
+                  ),
+                  { addSuffix: true }
+                )}
+              </span>
+            </span>
+
+            <p className="ml-5 text-sm font-semibold text-black/60">
               {currentRootCategory?.description ||
                 currentSubCategory?.description}
             </p>

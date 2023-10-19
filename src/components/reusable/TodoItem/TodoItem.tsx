@@ -49,7 +49,9 @@ const TodoItem = ({ data }: { data: TodoType }) => {
         <Checkbox id="checked" label="" checked={done} onChange={handleCheck} />
       </div>
       <div className="flex-1 relative">
-        <h2 className="font-semibold">{title}</h2>
+        <h2 className="font-semibold">
+          <span className=" truncate w-[50%] block">{title}</span>
+        </h2>
         <p className="text-black/60 block text-sm font-semibold truncate max-w-[150px] md:max-w-[250px]">
           {description}
         </p>
