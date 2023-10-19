@@ -14,6 +14,7 @@ import { selectCategoryById } from "../../../redux/features/category/categorySli
 import { selectSubCategoryById } from "../../../redux/features/subCategory/subCategorySlice";
 import { formatDistanceToNow } from "date-fns";
 import { addTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
+import Alert from "../Alert/Alert";
 
 const TodoForm = (props: TodoFormPropsType) => {
   const updateFormType = props.type === "update";
@@ -27,6 +28,11 @@ const TodoForm = (props: TodoFormPropsType) => {
     title: updateFormType ? props.todo?.title : "",
     description: updateFormType ? props.todo?.description : "",
   });
+  const [formError, setFormError] = useState<{
+    errorAt: "title" | "description" | "dueDate";
+    warnType?: boolean;
+    message: string;
+  } | null>(null);
   const [dueDate, setDueDate] = useState<Date | null>(
     updateFormType
       ? props.todo?.dueDate
@@ -60,11 +66,46 @@ const TodoForm = (props: TodoFormPropsType) => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
+    if (name === "title") {
+      if (value.length >= 60) {
+        setFormError({
+          errorAt: "title",
+          warnType: true,
+          message: "Maximum characters of title must be 60!",
+        });
+        return;
+      }
+    }
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.title.length) {
+      setFormError({
+        errorAt: "title",
+        message: "Please fill out todo's title!",
+      });
+      return;
+    }
+
+    if (!dueDate) {
+      setFormError({
+        errorAt: "dueDate",
+        message: "Please pick the due date!",
+      });
+      return;
+    }
+
+    if (!formData.description?.length) {
+      setFormError({
+        errorAt: "description",
+        message: "Please fill out description!",
+      });
+      return;
+    }
+
     if (!updateFormType && category && dueDate) {
       dispatch(
         addTodo({
@@ -126,15 +167,27 @@ const TodoForm = (props: TodoFormPropsType) => {
       </h1>
       <div className="mt-5 sm:flex sm:justify-center lg:justify-start">
         <form onSubmit={handleSubmit} className="block sm:inline-flex flex-col">
+          <Alert
+            show={!!formError}
+            warnType={formError?.warnType}
+            message={formError?.message || ""}
+          />
           <div className="flex flex-col md:flex-row gap-2">
             <div className="flex gap-2 flex-col-reverse sm:flex-row">
               <input
                 type="text"
+                id="todo_title"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="Enter title"
-                className="px-5 py-2 font-semibold placeholder:text-black/60 outline-none border border-black/30 focus:border-black/60 duration-200 rounded block sm:inline-block"
+                className={`px-5 py-2 font-semibold placeholder:text-black/60 outline-none border ${
+                  formError &&
+                  formError.errorAt === "title" &&
+                  !formError.warnType
+                    ? "border-red-500"
+                    : "border-black/30"
+                } focus:border-black/60 duration-200 rounded block sm:inline-block`}
               />
               <button
                 type="button"
@@ -172,7 +225,13 @@ const TodoForm = (props: TodoFormPropsType) => {
                 )}
               </button>
             </div>
-            <div>
+            <div
+              className={`rounded ${
+                formError && formError.errorAt === "dueDate"
+                  ? "outline outline-1 outline-red-500"
+                  : ""
+              }`}
+            >
               <DatePicker
                 showIcon
                 icon={
@@ -187,7 +246,7 @@ const TodoForm = (props: TodoFormPropsType) => {
                   setDueDate(newDate);
                 }}
                 placeholderText="Pick due date"
-                className="font-semibold placeholder:text-black"
+                className={`font-semibold placeholder:text-black`}
               />
             </div>
           </div>
@@ -197,9 +256,13 @@ const TodoForm = (props: TodoFormPropsType) => {
               value={formData.description}
               onChange={handleChange}
               placeholder="Enter description"
-              id=""
+              id="todo_description"
               rows={10}
-              className="w-full px-5 py-2 font-medium placeholder:text-black/60 outline-none border border-black/30 focus:border-black/60 duration-200 rounded"
+              className={`w-full px-5 py-2 font-medium placeholder:text-black/60 outline-none border ${
+                formError && formError.errorAt === "description"
+                  ? "outline outline-1 outline-red-500 focus:outline-transparent"
+                  : "border-black/30"
+              }focus:border-black/60 duration-200 rounded`}
             ></textarea>
           </div>
           <div className="flex justify-between items-center mt-5">

@@ -18,6 +18,7 @@ import {
   updateSubCategory,
 } from "../../../redux/features/subCategory/subCategorySlice";
 import { formatDistanceToNow } from "date-fns";
+import Alert from "../Alert/Alert";
 
 const CategoryFormModal = (props: CategoryFormPropsType) => {
   const updateFormType = props.type === "update";
@@ -39,16 +40,46 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
     name: updateFormType ? props.category.name : "",
     description: updateFormType ? props.category.description : "",
   });
+  const [formError, setFormError] = useState<{
+    errorAt: "name" | "description";
+    warnType?: boolean;
+    message: string;
+  } | null>(null);
 
   const parent = useRef<HTMLButtonElement>(null);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
+    if (name === "name") {
+      if (value.length >= 30) {
+        setFormError({
+          errorAt: "name",
+          warnType: true,
+          message: "Max characters of category's name must be 30!",
+        });
+        return;
+      }
+    }
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name.length) {
+      setFormError({
+        errorAt: "name",
+        message: "Please fill out category's name!",
+      });
+      return;
+    }
+
+    if (!formData.description?.length) {
+      setFormError({
+        errorAt: "description",
+        message: "Please fill out description!",
+      });
+      return;
+    }
     if (!updateFormType) {
       dispatch(
         parentCategory
@@ -68,7 +99,7 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
         autoClose: 3000,
         position: "top-right",
       });
-    } else if (updateFormType) {
+    } else {
       dispatch(
         parentCategory
           ? updateSubCategory({
@@ -93,6 +124,7 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
       });
     }
     setFormData({ name: "", description: "" });
+    setFormError(null);
     props.onClose();
   };
 
@@ -127,6 +159,11 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
             )}
           </h1>
           <div className="mt-5">
+            <Alert
+              show={!!formError}
+              warnType={formError?.warnType}
+              message={formError?.message || ""}
+            />
             <form
               onSubmit={handleSubmit}
               autoComplete="off"
@@ -134,20 +171,32 @@ const CategoryFormModal = (props: CategoryFormPropsType) => {
             >
               <input
                 type="text"
+                id="category_name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter category's name"
-                required
-                className="px-5 py-2 w-full font-semibold placeholder:text-black/60 outline-none border border-black/30 focus:border-black/60 duration-200 rounded block"
+                required={false}
+                className={`px-5 py-2 w-full font-semibold placeholder:text-black/60 outline-none border ${
+                  formError &&
+                  formError.errorAt === "name" &&
+                  !formError.warnType
+                    ? "border-red-500"
+                    : "border-black/30"
+                } focus:border-black/60 duration-200 rounded block`}
               />
               <textarea
+                id="category_description"
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
                 placeholder="Enter description"
                 rows={10}
-                className="w-full mt-5 px-5 py-2 font-medium placeholder:text-black/60 outline-none border border-black/30 focus:border-black/60 duration-200 rounded"
+                className={`w-full mt-5 px-5 py-2 font-medium placeholder:text-black/60 outline-none border ${
+                  formError && formError.errorAt === "description"
+                    ? "border-red-500"
+                    : "border-black/30"
+                } focus:border-black/60 duration-200 rounded`}
               ></textarea>
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-black/60">

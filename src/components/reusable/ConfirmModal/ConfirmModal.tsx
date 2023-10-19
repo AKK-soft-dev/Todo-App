@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { HiX } from "react-icons/hi";
 
@@ -11,6 +12,14 @@ type ConfirmModalProps = {
 
 const ConfirmModal = (props: ConfirmModalProps) => {
   const { title, body, open, onClose, onConfirm } = props;
+  const confirmBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      confirmBtnRef.current?.focus();
+    }
+  }, [open]);
+
   const content = (
     <div
       className={`fixed top-0 left-0 right-0 bottom-0 scale-0 bg-black/80 transition-all duration-300  z-[100]  ${
@@ -30,16 +39,17 @@ const ConfirmModal = (props: ConfirmModalProps) => {
         <div className="mt-7 flex justify-end items-center gap-2">
           <button
             onClick={onClose}
-            className="px-2 py-1 border border-black hover:text-white rounded font-medium hover:bg-black/80 active:bg-black duration-200"
+            className="px-2 py-1 border border-black hover:text-white rounded font-medium focus:outline focus:outline-2 focus:outline-black/80 focus:outline-offset-2 hover:bg-black/80 active:bg-black duration-200"
           >
             Cancel
           </button>
           <button
+            ref={confirmBtnRef}
             onClick={() => {
               onConfirm();
               onClose();
             }}
-            className="px-2 py-1 border border-black bg-black text-white rounded font-medium hover:bg-black/80 active:bg-black duration-200"
+            className="px-2 py-1 border border-black bg-black text-white rounded font-medium focus:outline focus:outline-2 focus:outline-black/80 focus:outline-offset-2 hover:bg-black/80 active:bg-black duration-200"
           >
             Confirm
           </button>
