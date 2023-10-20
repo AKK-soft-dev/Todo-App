@@ -6,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState, useRef, useEffect } from "react";
 import autoAnimate from "@formkit/auto-animate";
 import { TodoFormPropsType } from "./types";
-import { TodoLevelType } from "../TodoItem/types";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
@@ -15,6 +14,7 @@ import { selectSubCategoryById } from "../../../redux/features/subCategory/subCa
 import { formatDistanceToNow } from "date-fns";
 import { addTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
 import Alert from "../Alert/Alert";
+import { TodoLevelType } from "../../../redux/features/featureTypes";
 
 const TodoForm = (props: TodoFormPropsType) => {
   const updateFormType = props.type === "update";

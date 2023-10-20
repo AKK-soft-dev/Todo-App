@@ -6,7 +6,6 @@ import CreateButton from "../reusable/Button/CreateButton";
 import CategoryFormModal from "../reusable/CategoryFormModal.tsx/CategoryFormModal";
 import { useAppSelector } from "../../redux/hooks";
 import { selectAllCategories } from "../../redux/features/category/categorySlice";
-import { nanoid } from "nanoid";
 
 const SideMenu = ({
   openSideMenu,

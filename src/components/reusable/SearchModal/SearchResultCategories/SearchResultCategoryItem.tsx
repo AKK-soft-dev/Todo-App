@@ -4,7 +4,7 @@ import {
   RootCategoryType,
   SubCategoryType,
 } from "../../../../redux/features/featureTypes";
-import HighlightedText from "../highlightText";
+import HighlightedText from "../HighlightecText";
 
 const SearchResultCategoryItem = ({
   data: { id, name, description },

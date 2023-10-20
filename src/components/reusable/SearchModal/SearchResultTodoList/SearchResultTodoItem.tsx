@@ -1,7 +1,7 @@
 import { HiChevronRight } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { TodoType } from "../../../../redux/features/featureTypes";
-import HighlightedText from "../highlightText";
+import HighlightedText from "../HighlightecText";
 
 const SearchResultTodoItem = ({
   data: { id, title, description },
