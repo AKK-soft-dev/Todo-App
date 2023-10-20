@@ -85,7 +85,7 @@ const TodoForm = (props: TodoFormPropsType) => {
     if (!formData.title.length) {
       setFormError({
         errorAt: "title",
-        message: "Please fill out todo's title!",
+        message: "Please fill out to-do's title!",
       });
       return;
     }
@@ -119,7 +119,7 @@ const TodoForm = (props: TodoFormPropsType) => {
         })
       );
       navigateTo(`/categories/${category.id}`);
-      toast.success("Todo added!", {
+      toast.success("To-do added!", {
         autoClose: 3000,
         position: "top-right",
       });
@@ -140,7 +140,7 @@ const TodoForm = (props: TodoFormPropsType) => {
         })
       );
       updateFormType && navigateTo(`/todo/${props.todo.id}`);
-      toast.success("Todo updated!", {
+      toast.success("To-do updated!", {
         autoClose: 3000,
         position: "top-right",
       });

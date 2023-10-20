@@ -82,7 +82,7 @@ const SubCategories = ({
               )}
             </ul>
           ) : (
-            <p className="text-center py-5">
+            <p className="text-center text-black/60 py-5">
               No categories here. Create a new one.
             </p>
           )}

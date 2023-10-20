@@ -85,7 +85,9 @@ const TodoList = ({
             )}
           </ul>
         ) : (
-          <p className="text-center py-5">No todo here. Create a new one.</p>
+          <p className="text-center text-black/60 py-5">
+            No to-do here. Create a new one.
+          </p>
         )}
       </div>
     </section>

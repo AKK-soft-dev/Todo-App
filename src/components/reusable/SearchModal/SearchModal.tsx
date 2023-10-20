@@ -3,11 +3,25 @@ import { SearchModalProps } from "./types";
 import { createPortal } from "react-dom";
 import SearchResultTodoListContainer from "./SearchResultTodoList/SearchResultTodoListContainer";
 import SearchResultCategoriesContainer from "./SearchResultCategories/SearchResultCategoriesContainer";
-import { useState, useDeferredValue } from "react";
+import { useState, useDeferredValue, useRef, useEffect } from "react";
 
 const SearchModal = ({ open, onClose }: SearchModalProps) => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
+
+  useEffect(() => {
+    const onTransitionEnd = () => {
+      open && searchInputRef.current?.focus();
+    };
+    modalRef.current?.addEventListener("transitionend", onTransitionEnd);
+
+    return () => {
+      modalRef.current?.removeEventListener("transitionend", onTransitionEnd);
+    };
+  }, [open]);
+
   return createPortal(
     <div
       className={`fixed top-0 left-0 right-0 bottom-0 scale-0 bg-black/80 transition-all duration-300 z-[100]  ${
@@ -15,6 +29,7 @@ const SearchModal = ({ open, onClose }: SearchModalProps) => {
       }`}
     >
       <div
+        ref={modalRef}
         role="modal"
         className={`fixed z-[101] duration-300 scale-0 ${
           open ? "scale-100 delay-150" : ""
@@ -25,6 +40,7 @@ const SearchModal = ({ open, onClose }: SearchModalProps) => {
             <HiSearch />
           </span>
           <input
+            ref={searchInputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
