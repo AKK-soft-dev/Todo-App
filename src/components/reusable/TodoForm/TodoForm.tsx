@@ -6,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState, useRef, useEffect } from "react";
 import autoAnimate from "@formkit/auto-animate";
 import { TodoFormPropsType } from "./types";
-import { TodoLevelType } from "../TodoItem/types";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
@@ -15,6 +14,7 @@ import { selectSubCategoryById } from "../../../redux/features/subCategory/subCa
 import { formatDistanceToNow } from "date-fns";
 import { addTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
 import Alert from "../Alert/Alert";
+import { TodoLevelType } from "../../../redux/features/featureTypes";
 
 const TodoForm = (props: TodoFormPropsType) => {
   const updateFormType = props.type === "update";
@@ -85,7 +85,7 @@ const TodoForm = (props: TodoFormPropsType) => {
     if (!formData.title.length) {
       setFormError({
         errorAt: "title",
-        message: "Please fill out todo's title!",
+        message: "Please fill out to-do's title!",
       });
       return;
     }
@@ -119,7 +119,7 @@ const TodoForm = (props: TodoFormPropsType) => {
         })
       );
       navigateTo(`/categories/${category.id}`);
-      toast.success("Todo added!", {
+      toast.success("To-do added!", {
         autoClose: 3000,
         position: "top-right",
       });
@@ -140,7 +140,7 @@ const TodoForm = (props: TodoFormPropsType) => {
         })
       );
       updateFormType && navigateTo(`/todo/${props.todo.id}`);
-      toast.success("Todo updated!", {
+      toast.success("To-do updated!", {
         autoClose: 3000,
         position: "top-right",
       });

@@ -1,5 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
-import { mock_data } from "../../components/Home/mock-data";
+import { useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/reusable/Breadcrumb/Breadcrumb";
 import TodoForm from "../../components/reusable/TodoForm/TodoForm";
 import { useAppSelector } from "../../redux/hooks";
