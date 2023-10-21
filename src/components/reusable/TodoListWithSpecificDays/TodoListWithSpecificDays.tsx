@@ -28,7 +28,9 @@ const TodoListWithSpecificDays = ({
             ))}
           </ul>
         ) : (
-          <p className="text-sm p-5">{messageOnEmptyList}</p>
+          <p className="text-sm text-black/60 font-semibold p-5">
+            {messageOnEmptyList}
+          </p>
         )}
       </div>
     </section>
