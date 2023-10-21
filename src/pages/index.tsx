@@ -2,7 +2,7 @@ import { addDays, isAfter, isBefore, isToday, isTomorrow } from "date-fns";
 import { selectAllTodo } from "../redux/features/todo/todoSlice";
 import { useAppSelector } from "../redux/hooks";
 import { TodoType } from "../redux/features/featureTypes";
-import TodoListWithSpecificDays from "../components/TodoListWithSpecificDays/TodoListWithSpecificDays";
+import TodoListWithSpecificDays from "../components/reusable/TodoListWithSpecificDays/TodoListWithSpecificDays";
 import { formatDateToStr } from "../utils/formatDate";
 
 const HomePage = () => {

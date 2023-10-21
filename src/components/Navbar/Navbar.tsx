@@ -2,11 +2,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { HiSearch } from "react-icons/hi";
 import { BsBellFill } from "react-icons/bs";
 import { CgMenuRight } from "react-icons/cg";
+import { MdMoreVert } from "react-icons/md";
 import SideMenu from "./SideMenu";
 import { useCallback, useEffect, useState } from "react";
 import Notification from "../Notification/Notification";
 import Logo from "../reusable/Logo/Logo";
 import SearchModal from "../reusable/SearchModal/SearchModal";
+import MoreMenu from "./MoreMenu";
 
 const Navbar = ({
   openSideMenu,
@@ -16,18 +18,30 @@ const Navbar = ({
   toggleSideMenu: () => void;
 }) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+
+  const closeMoreMenu = useCallback(() => {
+    setMoreMenuOpen(false);
+  }, []);
+
+  const closeNotification = useCallback(() => {
+    setNotificationOpen(false);
+  }, []);
 
   const toggleNotification: React.MouseEventHandler<HTMLButtonElement> = (
     e
   ) => {
     e.stopPropagation();
+    if (moreMenuOpen) closeMoreMenu();
     setNotificationOpen((prev) => !prev);
   };
 
-  const closeNotification = useCallback(() => {
-    setNotificationOpen(false);
-  }, []);
+  const toggleMoreMenu: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    if (notificationOpen) closeNotification();
+    setMoreMenuOpen((prev) => !prev);
+  };
 
   const toggleSearchModal = () => {
     setSearchModalOpen((prev) => !prev);
@@ -38,12 +52,16 @@ const Navbar = ({
   };
 
   useEffect(() => {
-    document.addEventListener("click", closeNotification);
+    const closePopups = () => {
+      closeNotification();
+      closeMoreMenu();
+    };
+    document.addEventListener("click", closePopups);
 
     return () => {
-      document.removeEventListener("click", closeNotification);
+      document.removeEventListener("click", closePopups);
     };
-  }, [closeNotification]);
+  }, [closeNotification, closeMoreMenu]);
 
   return (
     <header className={`relative text-base transition-all duration-300`}>
@@ -67,7 +85,7 @@ const Navbar = ({
             </span>
           </div>
 
-          <div className="ml-4 flex space-x-4 items-center">
+          <div className="ml-3 flex space-x-3 items-center">
             <div
               className="cursor-pointer p-1 text-xl block xl:hidden"
               onClick={toggleSideMenu}
@@ -80,6 +98,13 @@ const Navbar = ({
             >
               <BsBellFill />
               <Notification open={notificationOpen} />
+            </button>
+            <button
+              className="cursor-pointer select-none relative text-xl"
+              onClick={toggleMoreMenu}
+            >
+              <MdMoreVert />
+              <MoreMenu open={moreMenuOpen} />
             </button>
           </div>
         </div>

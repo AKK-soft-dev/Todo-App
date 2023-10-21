@@ -11,8 +11,8 @@ const SearchResultTodoItem = ({
   query: string;
 }) => {
   return (
-    <article className="relative flex p-5 space-x-2 bg-default rounded hover:bg-slate-200 duration-200 cursor-pointer">
-      <div className="flex-1 relative">
+    <article className="relative flex space-x-2 bg-default rounded hover:bg-slate-200 duration-200 cursor-pointer">
+      <div className="flex-1 relative p-5">
         <h2 className="font-semibold">
           <span className=" truncate w-[50%] block">
             <HighlightedText text={title} queryToHighlight={query} />

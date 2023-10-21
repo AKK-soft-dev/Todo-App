@@ -1,7 +1,6 @@
 import Breadcrumb from "../../components/reusable/Breadcrumb/Breadcrumb";
 import { RiEdit2Fill } from "react-icons/ri";
 import { AiTwotoneCalendar } from "react-icons/ai";
-import { formatDateToStr } from "../../utils/formatDate";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,7 +11,7 @@ import {
   updateTodo,
 } from "../../redux/features/todo/todoSlice";
 import useTree from "../../utils/custom-hooks/useTree";
-import { formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { HiChevronLeft, HiTrash } from "react-icons/hi";
 import ConfirmModal from "../../components/reusable/ConfirmModal/ConfirmModal";
 
@@ -32,11 +31,13 @@ const TodoDetail = () => {
   const dispatch = useAppDispatch();
   const handleCheck = () => {
     if (todo) {
+      const nextValue = !todo.done;
       dispatch(
         updateTodo({
           id: todo.id,
           changes: {
-            done: !todo.done,
+            done: nextValue,
+            doneAt: nextValue ? new Date().toISOString() : undefined,
           },
         })
       );
@@ -124,7 +125,9 @@ const TodoDetail = () => {
                 <span>Due date : </span>
                 <AiTwotoneCalendar />
                 <span>
-                  {todo?.dueDate ? formatDateToStr(todo.dueDate) : "Unknown"}
+                  {todo?.dueDate
+                    ? format(new Date(todo.dueDate), "MMMM d, yyyy")
+                    : "Unknown"}
                 </span>
               </span>
             </div>

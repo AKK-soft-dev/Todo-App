@@ -1,21 +1,21 @@
-import NotificationItem from "./NotificationItem";
+// import NotificationItem from "./NotificationItem";
 
-const notifications = [
-  {
-    id: 1,
-    linkTo: "#",
-    img_path: "/team-2.jpg",
-    message: "New message from Laur",
-    timeDistance: "3 mins ago",
-  },
-  {
-    id: 2,
-    linkTo: "#",
-    img_path: "/logo-spotify.svg",
-    message: "New album from Taylor Swift",
-    timeDistance: "1 day",
-  },
-];
+// const notifications = [
+//   {
+//     id: 1,
+//     linkTo: "#",
+//     img_path: "/team-2.jpg",
+//     message: "New message from Laur",
+//     timeDistance: "3 mins ago",
+//   },
+//   {
+//     id: 2,
+//     linkTo: "#",
+//     img_path: "/logo-spotify.svg",
+//     message: "New album from Taylor Swift",
+//     timeDistance: "1 day",
+//   },
+// ];
 
 const Notification = ({ open }: { open: boolean }) => {
   return (
@@ -27,17 +27,20 @@ const Notification = ({ open }: { open: boolean }) => {
       }`}
     >
       <div
-        className={`mt-10 relative bg-white w-[300px] shadow-lg px-2 py-3 text-sm text-black/60 rounded-lg before:absolute before:w-0 before:h-0 before:border-8 before:right-4 before:border-e-transparent before:border-b-transparent before:rotate-45 before:border-white before:transition-all before:duration-300 before:delay-100 ${
+        className={`mt-10 relative bg-white w-[300px] shadow-lg px-2 py-3 text-sm rounded-lg before:absolute before:w-0 before:h-0 before:border-8 before:right-2 before:border-e-transparent before:border-b-transparent before:rotate-45 before:border-white before:transition-all before:duration-300 before:delay-100 ${
           open ? "before:-top-1" : "before:top-0"
         }`}
       >
-        <ul className="space-y-1">
+        <p className="text-xl text-red-500 font-bold py-10">
+          Feature not ready!
+        </p>
+        {/* <ul className="space-y-1">
           {notifications.map((notification) => (
             <li key={notification.id}>
               <NotificationItem {...notification} />
             </li>
           ))}
-        </ul>
+        </ul> */}
       </div>
     </div>
   );

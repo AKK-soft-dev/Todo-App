@@ -1,5 +1,5 @@
-import { TodoType } from "../../redux/features/featureTypes";
-import TodoItem from "../reusable/TodoItem/TodoItem";
+import { TodoType } from "../../../redux/features/featureTypes";
+import TodoItem from "../TodoItem/TodoItem";
 
 const TodoListWithSpecificDays = ({
   title,
