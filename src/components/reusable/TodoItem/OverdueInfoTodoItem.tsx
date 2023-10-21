@@ -20,7 +20,9 @@ const OverdueInfoTodoItem = ({
         </p>
         <div className="text-xs mt-3 flex space-x-1 items-center text-red-400 font-medium">
           <AiFillClockCircle />
-          <span>{formatDistanceToNow(new Date(dueDate))}</span>
+          <span>
+            {formatDistanceToNow(new Date(dueDate), { addSuffix: true })}
+          </span>
         </div>
         <Link
           to={`/todo/${id}`}

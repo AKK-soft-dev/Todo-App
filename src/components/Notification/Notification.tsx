@@ -32,7 +32,7 @@ const Notification = ({ open }: { open: boolean }) => {
         }`}
       >
         <p className="text-xl text-red-500 font-bold py-10">
-          Feature not ready!
+          Feature under development!
         </p>
         {/* <ul className="space-y-1">
           {notifications.map((notification) => (

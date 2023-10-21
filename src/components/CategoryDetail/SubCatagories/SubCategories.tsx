@@ -1,6 +1,7 @@
 import { TbCategoryFilled } from "react-icons/tb";
+import { BiSortAlt2 } from "react-icons/bi";
 import autoAnimate from "@formkit/auto-animate";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import SubCategoryItem from "../../reusable/SubCategoryItem/SubCategoryItem";
 import CreateButton from "../../reusable/Button/CreateButton";
 import { useAppSelector } from "../../../redux/hooks";
@@ -8,6 +9,9 @@ import { selectSubCategoryById } from "../../../redux/features/subCategory/subCa
 import store, { RootState } from "../../../redux/store";
 import { createSelector } from "@reduxjs/toolkit";
 import CategoryFormModal from "../../reusable/CategoryFormModal.tsx/CategoryFormModal";
+import sortWithDate from "../../../utils/sortWithDate";
+
+type CategoriesSortType = "newest" | "oldest";
 
 const subCategoryIdsSelector = (
   state: RootState,
@@ -35,7 +39,12 @@ const SubCategories = ({
   underRootParent: boolean;
   parentId: string;
 }) => {
+  const [sortBy, setSortBy] = useState<CategoriesSortType>("newest");
   const [formModalOpen, setFormModalOpen] = useState(false);
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+
+  // to animate dropdown
+  const dropdownParent = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const listParentRef = useRef<HTMLUListElement>(null);
 
@@ -51,6 +60,19 @@ const SubCategories = ({
       subCategoriesSelector(state, underRootParent, parentId)
     ) || [];
 
+  const sortedCategories = useMemo(() => {
+    return subCategories.sort((category1, category2) => {
+      if (category1 && category2) {
+        return sortWithDate(
+          category2.createdAt,
+          category1.createdAt,
+          sortBy === "newest"
+        );
+      }
+      return 0;
+    });
+  }, [subCategories, sortBy]);
+
   const toggleFormModal = () => {
     setFormModalOpen((prev) => !prev);
   };
@@ -58,6 +80,22 @@ const SubCategories = ({
   const closeFormModal = () => {
     setFormModalOpen(false);
   };
+
+  const toggleDropDown = () => {
+    setDropDownOpen((prev) => !prev);
+  };
+
+  const handleSelect =
+    (sortType: CategoriesSortType) => (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setSortBy(sortType);
+      toggleDropDown();
+    };
+
+  useEffect(() => {
+    dropdownParent.current &&
+      autoAnimate(dropdownParent.current, { duration: 100 });
+  }, []);
 
   return (
     <>
@@ -67,12 +105,43 @@ const SubCategories = ({
             <TbCategoryFilled />
             <span>Sub Categories</span>
           </h3>
-          <CreateButton onClick={toggleFormModal} />
+          <div className="flex gap-1 items-center">
+            <button
+              type="button"
+              ref={dropdownParent}
+              onClick={toggleDropDown}
+              className={`relative text-sm flex w-[120px] items-center justify-between px-2 py-1 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
+                dropDownOpen ? "border-black/60" : ""
+              }`}
+            >
+              <span className="text-xs">{sortBy}</span>
+              <BiSortAlt2 />
+
+              {/** Drop down */}
+              {dropDownOpen && (
+                <ul className="absolute w-[100px] z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
+                  <li
+                    onClick={handleSelect("newest")}
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                  >
+                    newest
+                  </li>
+                  <li
+                    onClick={handleSelect("oldest")}
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                  >
+                    oldest
+                  </li>
+                </ul>
+              )}
+            </button>
+            <CreateButton onClick={toggleFormModal} />
+          </div>
         </div>
         <div ref={containerRef} className="bg-paper my-2 rounded shadow p-2">
-          {subCategories.length > 0 ? (
+          {sortedCategories.length > 0 ? (
             <ul className="my-2 divide-y-2" ref={listParentRef}>
-              {subCategories.map(
+              {sortedCategories.map(
                 (subCategory) =>
                   subCategory && (
                     <li key={subCategory.id}>

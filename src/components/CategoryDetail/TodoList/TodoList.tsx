@@ -1,6 +1,7 @@
 import { LuListTodo } from "react-icons/lu";
+import { BiSortAlt2 } from "react-icons/bi";
 import autoAnimate from "@formkit/auto-animate";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import TodoItem from "../../reusable/TodoItem/TodoItem";
 import CreateButton from "../../reusable/Button/CreateButton";
 import { selectTodoById } from "../../../redux/features/todo/todoSlice";
@@ -8,6 +9,9 @@ import { useAppSelector } from "../../../redux/hooks";
 import store, { RootState } from "../../../redux/store";
 // import { createSelector } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
+import sortWithDate from "../../../utils/sortWithDate";
+
+type TodoListSortType = "newest" | "oldest" | "near" | "far";
 
 const todoIdsSelector = (
   state: RootState,
@@ -34,12 +38,18 @@ const TodoList = ({
   underRootParent: boolean;
   parentId: string;
 }) => {
+  const [sortBy, setSortBy] = useState<TodoListSortType>("newest");
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const listParentRef = useRef<HTMLUListElement>(null);
   const navigateTo = useNavigate();
 
+  // to animate dropdown
+  const dropdownParent = useRef<HTMLButtonElement>(null);
   const containerEl = containerRef.current;
   const listParentEl = listParentRef.current;
+
   useEffect(() => {
     containerEl && autoAnimate(containerEl);
     listParentEl && autoAnimate(listParentEl);
@@ -56,11 +66,51 @@ const TodoList = ({
       return todoListSelector(todoIds!);
     }) || [];
 
+  const sortedTodoList = useMemo(() => {
+    return todoList.sort((todo1, todo2) => {
+      if (todo1 && todo2) {
+        switch (sortBy) {
+          case "newest":
+          case "oldest":
+            return sortWithDate(
+              todo1.createdAt,
+              todo2.createdAt,
+              sortBy === "oldest"
+            );
+          case "near":
+          case "far":
+            return sortWithDate(
+              todo1.dueDate,
+              todo2.dueDate,
+              sortBy === "near"
+            );
+        }
+      }
+      return 0;
+    });
+  }, [todoList, sortBy]);
+
   const handleNavigate = () => {
     if (parentId) {
       navigateTo(`/create?parent=${parentId}`);
     }
   };
+
+  const handleSelect =
+    (sortType: TodoListSortType) => (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setSortBy(sortType);
+      toggleDropDown();
+    };
+
+  const toggleDropDown = () => {
+    setDropDownOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    dropdownParent.current &&
+      autoAnimate(dropdownParent.current, { duration: 100 });
+  }, []);
 
   return (
     <section className="my-10">
@@ -69,13 +119,56 @@ const TodoList = ({
           <LuListTodo />
           <span>Todo</span>
         </h3>
-        <CreateButton onClick={handleNavigate} />
+        <div className="flex gap-1 items-center">
+          <button
+            type="button"
+            ref={dropdownParent}
+            onClick={toggleDropDown}
+            className={`relative text-sm flex w-[120px] items-center justify-between px-2 py-1 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
+              dropDownOpen ? "border-black/60" : ""
+            }`}
+          >
+            <span className="text-xs">{sortBy}</span>
+            <BiSortAlt2 />
+
+            {/** Drop down */}
+            {dropDownOpen && (
+              <ul className="absolute w-[110px] z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
+                <li
+                  onClick={handleSelect("newest")}
+                  className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                >
+                  newest
+                </li>
+                <li
+                  onClick={handleSelect("oldest")}
+                  className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                >
+                  oldest
+                </li>
+                <li
+                  onClick={handleSelect("near")}
+                  className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                >
+                  near due date
+                </li>
+                <li
+                  onClick={handleSelect("far")}
+                  className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                >
+                  far due date
+                </li>
+              </ul>
+            )}
+          </button>
+          <CreateButton onClick={handleNavigate} />
+        </div>
       </div>
 
       <div ref={containerRef} className="bg-paper my-2 rounded shadow p-2">
-        {todoList.length > 0 ? (
+        {sortedTodoList.length > 0 ? (
           <ul className="my-2 divide-y-2" ref={listParentRef}>
-            {todoList.map(
+            {sortedTodoList.map(
               (todo) =>
                 todo && (
                   <li key={todo.id}>
