@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import { format, isBefore } from "date-fns";
+import { format, isAfter } from "date-fns";
 
 const TodoItem = ({ data }: { data: TodoType }) => {
   const { id, title, description, dueDate, done } = data;
@@ -61,7 +61,9 @@ const TodoItem = ({ data }: { data: TodoType }) => {
         </p>
         <div
           className={`text-xs mt-3 flex space-x-2 items-center ${
-            isBefore(new Date(), dueDateObj) ? "text-black/60" : "text-red-400"
+            isAfter(new Date(), dueDateObj) && !done
+              ? "text-red-400"
+              : "text-black/60"
           } font-medium`}
         >
           <AiTwotoneCalendar />

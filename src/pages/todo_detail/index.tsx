@@ -11,7 +11,7 @@ import {
   updateTodo,
 } from "../../redux/features/todo/todoSlice";
 import useTree from "../../utils/custom-hooks/useTree";
-import { format, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow, isAfter } from "date-fns";
 import { HiChevronLeft, HiTrash } from "react-icons/hi";
 import ConfirmModal from "../../components/reusable/ConfirmModal/ConfirmModal";
 
@@ -88,18 +88,18 @@ const TodoDetail = () => {
             <h1 className="text-xl font-bold">
               <Link
                 to={`/categories/${todo.parentId}`}
-                className="text-xl font-bold my-2 flex items-center space-x-1 cursor-pointer"
+                className="text-xl font-bold mt-2 flex items-center space-x-1 cursor-pointer"
               >
                 <HiChevronLeft /> <span>{todo.title}</span>
               </Link>
             </h1>
-            <div className="mt-1 mb-5 flex items-center text-black/60 space-x-1 font-semibold">
+            <div className=" mb-5 flex items-center text-black/60 space-x-1 font-semibold">
               <span className="px-[2px] py-[1px] border border-black/30 rounded text-xs">
                 {todo?.level}
               </span>
               <span>•</span>
               <span className="text-xs">
-                {todo?.createdAt
+                {todo.createdAt
                   ? formatDistanceToNow(new Date(todo.createdAt), {
                       addSuffix: true,
                     })
@@ -120,15 +120,17 @@ const TodoDetail = () => {
               </button>
             </div>
 
-            <div className="mt-5 flex justify-between text-black/70 font-medium">
+            <div
+              className={`mt-5 flex justify-between ${
+                isAfter(new Date(), new Date(todo.dueDate)) && !todo.done
+                  ? "text-red-400"
+                  : "text-black/70"
+              } font-medium`}
+            >
               <span className="text-xs mt-3 flex space-x-1 items-center font-medium">
                 <span>Due date : </span>
                 <AiTwotoneCalendar />
-                <span>
-                  {todo?.dueDate
-                    ? format(new Date(todo.dueDate), "MMMM d, yyyy")
-                    : "Unknown"}
-                </span>
+                <span>{format(new Date(todo.dueDate), "MMMM d, yyyy")}</span>
               </span>
             </div>
           </section>
