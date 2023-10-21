@@ -24,14 +24,14 @@ export const initialCategoryData: EntityState<RootCategoryType> = {
         "aOOuRi5HhqqfVDlzSv6rb",
         "F5tiwu-xKAy-vh8MAfiLD",
       ],
-      createdAt: "12/03/2023",
+      createdAt: "12/03/2021",
     },
     "1WltZRVXg9g58xezsZDoe": {
       id: "1WltZRVXg9g58xezsZDoe",
       name: "School",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
-      createdAt: "12/03/2023",
+      createdAt: "12/03/2020",
       todoList: ["a6_d5CzR5OrJiHe233qzg"],
     },
     "fKE-LveMsiLFGoj4_XbQb": {
@@ -39,14 +39,14 @@ export const initialCategoryData: EntityState<RootCategoryType> = {
       name: "Business",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
-      createdAt: "12/03/2023",
+      createdAt: "12/03/2020",
     },
     hlNCw8ki8zY2_vixR0LjP: {
       id: "hlNCw8ki8zY2_vixR0LjP",
       name: "Dentist",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
-      createdAt: "12/03/2023",
+      createdAt: "12/03/2020",
     },
   },
 };

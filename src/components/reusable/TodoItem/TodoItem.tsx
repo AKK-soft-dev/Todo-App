@@ -3,12 +3,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { AiOutlineDelete, AiTwotoneCalendar } from "react-icons/ai";
 import Checkbox from "../Checkbox/Checkbox";
-import { formatDateToStr } from "../../../utils/formatDate";
 import { TodoType } from "../../../redux/features/featureTypes";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import { format, isAfter } from "date-fns";
 
 const TodoItem = ({ data }: { data: TodoType }) => {
   const { id, title, description, dueDate, done } = data;
@@ -16,11 +16,13 @@ const TodoItem = ({ data }: { data: TodoType }) => {
 
   const dispatch = useDispatch();
   const handleCheck = () => {
+    const nextValue = !done;
     dispatch(
       updateTodo({
         id,
         changes: {
-          done: !done,
+          done: nextValue,
+          doneAt: nextValue ? new Date().toISOString() : undefined,
         },
       })
     );
@@ -43,6 +45,8 @@ const TodoItem = ({ data }: { data: TodoType }) => {
     setConfirmModalOpen(false);
   };
 
+  const dueDateObj = new Date(dueDate);
+
   return (
     <article className="relative flex p-5 space-x-2 rounded hover:bg-slate-200 duration-200 cursor-pointer">
       <div className="z-10 relative">
@@ -55,9 +59,15 @@ const TodoItem = ({ data }: { data: TodoType }) => {
         <p className="text-black/60 block text-sm font-semibold truncate max-w-[150px] md:max-w-[250px]">
           {description}
         </p>
-        <div className="text-xs mt-3 flex space-x-2 items-center text-black/60 font-medium">
+        <div
+          className={`text-xs mt-3 flex space-x-2 items-center ${
+            isAfter(new Date(), dueDateObj) && !done
+              ? "text-red-400"
+              : "text-black/60"
+          } font-medium`}
+        >
           <AiTwotoneCalendar />
-          <span>{formatDateToStr(dueDate)}</span>
+          <span>{format(dueDateObj, "MMMM d, yyyy")}</span>
         </div>
         <Link
           to={`/todo/${id}`}

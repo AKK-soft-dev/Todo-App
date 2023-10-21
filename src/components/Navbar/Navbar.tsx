@@ -2,10 +2,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { HiSearch } from "react-icons/hi";
 import { BsBellFill } from "react-icons/bs";
 import { CgMenuRight } from "react-icons/cg";
+import { MdMoreVert } from "react-icons/md";
 import SideMenu from "./SideMenu";
 import { useCallback, useEffect, useState } from "react";
 import Notification from "../Notification/Notification";
 import Logo from "../reusable/Logo/Logo";
+import SearchModal from "../reusable/SearchModal/SearchModal";
+import MoreMenu from "./MoreMenu";
 
 const Navbar = ({
   openSideMenu,
@@ -14,24 +17,51 @@ const Navbar = ({
   openSideMenu: boolean;
   toggleSideMenu: () => void;
 }) => {
-  const [openNotification, setOpenNotification] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
 
-  const toggleNotification: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
-    setOpenNotification((prev) => !prev);
-  };
-
-  const closeNotification = useCallback(() => {
-    setOpenNotification(false);
+  const closeMoreMenu = useCallback(() => {
+    setMoreMenuOpen(false);
   }, []);
 
+  const closeNotification = useCallback(() => {
+    setNotificationOpen(false);
+  }, []);
+
+  const toggleNotification: React.MouseEventHandler<HTMLButtonElement> = (
+    e
+  ) => {
+    e.stopPropagation();
+    if (moreMenuOpen) closeMoreMenu();
+    setNotificationOpen((prev) => !prev);
+  };
+
+  const toggleMoreMenu: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    if (notificationOpen) closeNotification();
+    setMoreMenuOpen((prev) => !prev);
+  };
+
+  const toggleSearchModal = () => {
+    setSearchModalOpen((prev) => !prev);
+  };
+
+  const closeSearchModal = () => {
+    setSearchModalOpen(false);
+  };
+
   useEffect(() => {
-    document.addEventListener("click", closeNotification);
+    const closePopups = () => {
+      closeNotification();
+      closeMoreMenu();
+    };
+    document.addEventListener("click", closePopups);
 
     return () => {
-      document.removeEventListener("click", closeNotification);
+      document.removeEventListener("click", closePopups);
     };
-  }, [closeNotification]);
+  }, [closeNotification, closeMoreMenu]);
 
   return (
     <header className={`relative text-base transition-all duration-300`}>
@@ -42,7 +72,10 @@ const Navbar = ({
         </div>
 
         <div className="flex justify-between md:justify-start items-center">
-          <div className="w-28 sm:w-52 h-full p-2 py-3 flex items-center bg-white border border-gray-300 rounded-lg cursor-pointer duration-200 hover:bg-slate-100">
+          <div
+            onClick={toggleSearchModal}
+            className="w-28  sm:w-52 h-full p-2 py-3 flex items-center bg-white border border-gray-300 rounded-lg cursor-pointer duration-200 hover:bg-slate-100"
+          >
             <div className="pointer-events-none flex justify-center text-slate-500">
               <HiSearch />
             </div>
@@ -52,23 +85,31 @@ const Navbar = ({
             </span>
           </div>
 
-          <div className="ml-4 flex space-x-4 items-center">
+          <div className="ml-3 flex space-x-3 items-center">
             <div
               className="cursor-pointer p-1 text-xl block xl:hidden"
               onClick={toggleSideMenu}
             >
               {openSideMenu ? <CgMenuRight /> : <GiHamburgerMenu />}
             </div>
-            <div
+            <button
               className="cursor-pointer select-none relative text-xl"
               onClick={toggleNotification}
             >
               <BsBellFill />
-              <Notification open={openNotification} />
-            </div>
+              <Notification open={notificationOpen} />
+            </button>
+            <button
+              className="cursor-pointer select-none relative text-xl"
+              onClick={toggleMoreMenu}
+            >
+              <MdMoreVert />
+              <MoreMenu open={moreMenuOpen} />
+            </button>
           </div>
         </div>
       </nav>
+      <SearchModal open={searchModalOpen} onClose={closeSearchModal} />
     </header>
   );
 };
