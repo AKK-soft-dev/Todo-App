@@ -24,13 +24,13 @@ Here are some features of my To-Do List project:
 
 - Task Notes/Descriptions: Enable users to add additional information or notes to tasks for more context.
 
-- Sorting: Provide sorting options such as sorting by due date, created date, priority (not implemented yet) to help users organize their tasks.
+- Sorting: Provide sorting options such as sorting by due date, created date, characters, and priority (not implemented yet) to help users organize their tasks.
 
 - Search: The functionality to find specific tasks and categories quickly.
 
 - Task Reminders(not implemented yet): Allow users to set reminders or notifications for important tasks or due dates.
 
-- Data Persistence: Store tasks locally on browser's localStorage so that users can access them even after closing the application.
+- Data Persistence: Store categories and tasks locally on browser's localStorage so that users can access them even after closing the application.
 
 - Undo/Redo: Undo and redo task completion.
 
