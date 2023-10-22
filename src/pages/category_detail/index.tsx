@@ -119,7 +119,7 @@ const CategoryDetailPage = () => {
               </span>
             </span>
 
-            <p className="ml-5 text-sm font-semibold text-black/60">
+            <p className="ml-5 text-sm font-medium text-black/60">
               {currentRootCategory?.description ||
                 currentSubCategory?.description}
             </p>

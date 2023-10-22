@@ -189,17 +189,18 @@ const TodoForm = (props: TodoFormPropsType) => {
                     : "border-black/30"
                 } focus:border-black/60 duration-200 rounded block sm:inline-block`}
               />
-              <button
-                type="button"
-                ref={parent}
-                onClick={toggleDropDown}
-                className={`relative flex w-[120px] items-center justify-between px-3 py-2 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
-                  dropDownOpen ? "border-black/60" : ""
-                }`}
-              >
-                <span>{level}</span>
-                <LuChevronsUpDown />
-
+              <div className="relative w-[120px] bg-red-300">
+                <button
+                  type="button"
+                  ref={parent}
+                  onClick={toggleDropDown}
+                  className={`relative flex w-[120px] items-center justify-between px-3 py-2 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
+                    dropDownOpen ? "border-black/60" : ""
+                  }`}
+                >
+                  <span>{level}</span>
+                  <LuChevronsUpDown />
+                </button>
                 {/** Drop down */}
                 {dropDownOpen && (
                   <ul className="absolute w-[100px] z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
@@ -223,7 +224,7 @@ const TodoForm = (props: TodoFormPropsType) => {
                     </li>
                   </ul>
                 )}
-              </button>
+              </div>
             </div>
             <div
               className={`rounded ${

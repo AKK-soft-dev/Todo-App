@@ -9,9 +9,9 @@ import { selectSubCategoryById } from "../../../redux/features/subCategory/subCa
 import store, { RootState } from "../../../redux/store";
 import { createSelector } from "@reduxjs/toolkit";
 import CategoryFormModal from "../../reusable/CategoryFormModal.tsx/CategoryFormModal";
-import sortWithDate from "../../../utils/sortWithDate";
+import { sortWithCharacters, sortWithDate } from "../../../utils/sorters";
 
-type CategoriesSortType = "newest" | "oldest";
+type CategoriesSortType = "newest" | "oldest" | "A - Z" | "Z - A";
 
 const subCategoryIdsSelector = (
   state: RootState,
@@ -63,11 +63,22 @@ const SubCategories = ({
   const sortedCategories = useMemo(() => {
     return subCategories.sort((category1, category2) => {
       if (category1 && category2) {
-        return sortWithDate(
-          category2.createdAt,
-          category1.createdAt,
-          sortBy === "newest"
-        );
+        switch (sortBy) {
+          case "newest":
+          case "oldest":
+            return sortWithDate(
+              category2.createdAt,
+              category1.createdAt,
+              sortBy === "newest"
+            );
+          case "A - Z":
+          case "Z - A":
+            return sortWithCharacters(
+              category1.name,
+              category2.name,
+              sortBy === "A - Z"
+            );
+        }
       }
       return 0;
     });
@@ -106,20 +117,21 @@ const SubCategories = ({
             <span>Sub Categories</span>
           </h3>
           <div className="flex gap-1 items-center">
-            <button
-              type="button"
-              ref={dropdownParent}
-              onClick={toggleDropDown}
-              className={`relative text-sm flex w-[120px] items-center justify-between px-2 py-1 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
-                dropDownOpen ? "border-black/60" : ""
-              }`}
-            >
-              <span className="text-xs">{sortBy}</span>
-              <BiSortAlt2 />
-
+            <div className="relative">
+              <button
+                type="button"
+                ref={dropdownParent}
+                onClick={toggleDropDown}
+                className={`relative text-sm flex w-[120px] items-center justify-between px-2 py-1 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
+                  dropDownOpen ? "border-black/60" : ""
+                }`}
+              >
+                <span className="text-xs">{sortBy}</span>
+                <BiSortAlt2 />
+              </button>
               {/** Drop down */}
               {dropDownOpen && (
-                <ul className="absolute w-[100px] z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
+                <ul className="absolute w-[100px] divide-y-2 z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
                   <li
                     onClick={handleSelect("newest")}
                     className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
@@ -132,9 +144,22 @@ const SubCategories = ({
                   >
                     oldest
                   </li>
+                  <li
+                    onClick={handleSelect("A - Z")}
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                  >
+                    A - Z
+                  </li>
+                  <li
+                    onClick={handleSelect("Z - A")}
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                  >
+                    Z - A
+                  </li>
                 </ul>
               )}
-            </button>
+            </div>
+
             <CreateButton onClick={toggleFormModal} />
           </div>
         </div>

@@ -9,9 +9,15 @@ import { useAppSelector } from "../../../redux/hooks";
 import store, { RootState } from "../../../redux/store";
 // import { createSelector } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
-import sortWithDate from "../../../utils/sortWithDate";
+import { sortWithCharacters, sortWithDate } from "../../../utils/sorters";
 
-type TodoListSortType = "newest" | "oldest" | "near" | "far";
+type TodoListSortType =
+  | "newest"
+  | "oldest"
+  | "near"
+  | "far"
+  | "A - Z"
+  | "Z - A";
 
 const todoIdsSelector = (
   state: RootState,
@@ -84,6 +90,13 @@ const TodoList = ({
               todo2.dueDate,
               sortBy === "near"
             );
+          case "A - Z":
+          case "Z - A":
+            return sortWithCharacters(
+              todo1.title,
+              todo2.title,
+              sortBy === "A - Z"
+            );
         }
       }
       return 0;
@@ -120,20 +133,21 @@ const TodoList = ({
           <span>Todo</span>
         </h3>
         <div className="flex gap-1 items-center">
-          <button
-            type="button"
-            ref={dropdownParent}
-            onClick={toggleDropDown}
-            className={`relative text-sm flex w-[120px] items-center justify-between px-2 py-1 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
-              dropDownOpen ? "border-black/60" : ""
-            }`}
-          >
-            <span className="text-xs">{sortBy}</span>
-            <BiSortAlt2 />
-
+          <div className="relative">
+            <button
+              type="button"
+              ref={dropdownParent}
+              onClick={toggleDropDown}
+              className={`relative text-sm flex w-[120px] items-center justify-between px-2 py-1 space-x-1 bg-white rounded border border-black/30 font-semibold duration-200 ${
+                dropDownOpen ? "border-black/60" : ""
+              }`}
+            >
+              <span className="text-xs">{sortBy}</span>
+              <BiSortAlt2 />
+            </button>
             {/** Drop down */}
             {dropDownOpen && (
-              <ul className="absolute w-[110px] z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
+              <ul className="absolute w-[110px] divide-y-2 z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
                 <li
                   onClick={handleSelect("newest")}
                   className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
@@ -158,9 +172,22 @@ const TodoList = ({
                 >
                   far due date
                 </li>
+                <li
+                  onClick={handleSelect("A - Z")}
+                  className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                >
+                  A - Z
+                </li>
+                <li
+                  onClick={handleSelect("Z - A")}
+                  className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                >
+                  Z - A
+                </li>
               </ul>
             )}
-          </button>
+          </div>
+
           <CreateButton onClick={handleNavigate} />
         </div>
       </div>
