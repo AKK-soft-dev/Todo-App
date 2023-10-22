@@ -11,7 +11,7 @@ import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import { format, isAfter } from "date-fns";
 
 const TodoItem = ({ data }: { data: TodoType }) => {
-  const { id, title, description, dueDate, done } = data;
+  const { id, title, description, level, dueDate, done } = data;
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -59,16 +59,22 @@ const TodoItem = ({ data }: { data: TodoType }) => {
         <p className="text-black/60 block text-sm font-semibold truncate max-w-[150px] md:max-w-[250px]">
           {description}
         </p>
-        <div
-          className={`text-xs mt-3 flex space-x-2 items-center ${
-            isAfter(new Date(), dueDateObj) && !done
-              ? "text-red-400"
-              : "text-black/60"
-          } font-medium`}
-        >
-          <AiTwotoneCalendar />
-          <span>{format(dueDateObj, "MMMM d, yyyy")}</span>
+        <div className="mt-3 flex items-center space-x-2">
+          <div
+            className={`text-xs flex space-x-1 items-center ${
+              isAfter(new Date(), dueDateObj) && !done
+                ? "text-red-400"
+                : "text-black/60"
+            } font-medium`}
+          >
+            <AiTwotoneCalendar />
+            <span>{format(dueDateObj, "MMMM d, yyyy")}</span>
+          </div>
+          <span className="px-[2px] py-[1px] border border-black/30 rounded text-xs">
+            {level}
+          </span>
         </div>
+
         <Link
           to={`/todo/${id}`}
           className="absolute top-0 left-0 right-0 bottom-0"

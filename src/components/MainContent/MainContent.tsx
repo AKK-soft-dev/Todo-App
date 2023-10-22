@@ -17,7 +17,7 @@ const MainContent = ({
   return (
     <main
       ref={parent}
-      className={`pt-16 px-4 transition-all duration-300 h-full overflow-x-hidden flex-1${
+      className={`pt-16 px-4 transition-all duration-300 min-h-[90vh] overflow-x-hidden ${
         expand ? `open-side_menu` : ""
       }`}
     >

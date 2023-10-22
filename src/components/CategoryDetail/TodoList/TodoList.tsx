@@ -205,7 +205,7 @@ const TodoList = ({
             )}
           </ul>
         ) : (
-          <p className="text-center text-black/60 py-5">
+          <p className="text-center text-sm font-semibold text-black/60 py-5">
             No to-do here. Create a new one.
           </p>
         )}

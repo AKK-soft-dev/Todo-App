@@ -227,7 +227,7 @@ const TodoForm = (props: TodoFormPropsType) => {
               </div>
             </div>
             <div
-              className={`rounded ${
+              className={`rounded inline-block ${
                 formError && formError.errorAt === "dueDate"
                   ? "outline outline-1 outline-red-500"
                   : ""
