@@ -4,6 +4,7 @@ import { useAppSelector } from "../redux/hooks";
 import { TodoType } from "../redux/features/featureTypes";
 import TodoListWithSpecificDays from "../components/reusable/TodoListWithSpecificDays/TodoListWithSpecificDays";
 import { formatDateToStr } from "../utils/formatDate";
+import { useRef } from "react";
 
 const HomePage = () => {
   const today = new Date();
@@ -11,23 +12,32 @@ const HomePage = () => {
   const next7Days = addDays(tomorrow, 7);
   const next30Days = addDays(next7Days, 30);
 
+  const prevTodoIds = useRef<string[]>([]);
+
   const todayTodo: TodoType[] = [];
   const tomorrowTodo: TodoType[] = [];
   const next7DaysTodo: TodoType[] = [];
   const next30DaysTodo: TodoType[] = [];
 
   const todoList = useAppSelector(selectAllTodo);
-
+  const prevIds = prevTodoIds.current;
   todoList.forEach((todo) => {
     const dueDate = new Date(todo.dueDate);
-    if (isToday(dueDate)) {
-      todayTodo.push(todo);
-    } else if (isTomorrow(dueDate)) {
-      tomorrowTodo.push(todo);
-    } else if (isAfter(dueDate, tomorrow) && isBefore(dueDate, next7Days)) {
-      next7DaysTodo.push(todo);
-    } else if (isAfter(dueDate, next7Days) && isBefore(dueDate, next30Days)) {
-      next30DaysTodo.push(todo);
+    // If the task is completed and this component is rendered for fist time
+    if (!todo.done || prevIds.includes(todo.id)) {
+      if (isToday(dueDate)) {
+        todayTodo.push(todo);
+        prevIds.push(todo.id);
+      } else if (isTomorrow(dueDate)) {
+        tomorrowTodo.push(todo);
+        prevIds.push(todo.id);
+      } else if (isAfter(dueDate, tomorrow) && isBefore(dueDate, next7Days)) {
+        next7DaysTodo.push(todo);
+        prevIds.push(todo.id);
+      } else if (isAfter(dueDate, next7Days) && isBefore(dueDate, next30Days)) {
+        next30DaysTodo.push(todo);
+        prevIds.push(todo.id);
+      }
     }
   });
 
