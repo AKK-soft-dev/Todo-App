@@ -8,6 +8,7 @@ export const initialTodoData: EntityState<TodoType> = {
     "F5tiwu-xKAy-vh8MAfiLD",
     "a6Gd5CzR5OrJiHXQWcqzg",
     "a6_d5CzR5OrJiHe233qzg",
+    "a67dA5CzR5OrJiHe233qzg",
   ],
   entities: {
     "m-nGn5t9_wLwS62YQhk0h": {
@@ -57,9 +58,20 @@ export const initialTodoData: EntityState<TodoType> = {
       done: true,
       doneAt: "2023-05-07T15:30:00.000Z",
     },
+    a67dA5CzR5OrJiHe233qzg: {
+      id: "a67dA5CzR5OrJiHe233qzg",
+      title: "Todo 5",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
+      parentId: "1WltZRVXg9g58xezsZDoe",
+      level: "high",
+      createdAt: "10/14/2023",
+      dueDate: "10/23/2023",
+      done: false,
+    },
     a6_d5CzR5OrJiHe233qzg: {
       id: "a6_d5CzR5OrJiHe233qzg",
-      title: "Todo 5",
+      title: "Todo 6",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores assumenda reprehenderit voluptatum.",
       parentId: "1WltZRVXg9g58xezsZDoe",
