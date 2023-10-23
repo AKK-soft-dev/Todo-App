@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteTodo, updateTodo } from "../../../redux/features/todo/todoSlice";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import { format, isAfter } from "date-fns";
+import { format, isAfter, subDays } from "date-fns";
 
 const TodoItem = ({ data }: { data: TodoType }) => {
   const { id, title, description, level, dueDate, done } = data;
@@ -62,7 +62,7 @@ const TodoItem = ({ data }: { data: TodoType }) => {
         <div className="mt-3 flex items-center space-x-2">
           <div
             className={`text-xs flex space-x-1 items-center ${
-              isAfter(new Date(), dueDateObj) && !done
+              isAfter(subDays(new Date(), 1), dueDateObj) && !done
                 ? "text-red-400"
                 : "text-black/60"
             } font-medium`}

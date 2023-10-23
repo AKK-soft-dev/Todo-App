@@ -3,14 +3,15 @@ import { TodoType } from "../../redux/features/featureTypes";
 import { selectAllTodo } from "../../redux/features/todo/todoSlice";
 import { useAppSelector } from "../../redux/hooks";
 import { MdOutlineUpdate } from "react-icons/md";
-import { format, isAfter } from "date-fns";
+import { format, isAfter, subDays } from "date-fns";
 import OverdueInfoTodoItem from "../../components/reusable/TodoItem/OverdueInfoTodoItem";
 
 const selectCompletedTodoItems = createSelector(
   [selectAllTodo],
   (todoList: TodoType[]) => {
     return todoList.filter(
-      (todo) => !todo.done && isAfter(new Date(), new Date(todo.dueDate))
+      (todo) =>
+        !todo.done && isAfter(subDays(new Date(), 1), new Date(todo.dueDate))
     );
   }
 );

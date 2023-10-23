@@ -11,7 +11,7 @@ import {
   updateTodo,
 } from "../../redux/features/todo/todoSlice";
 import useTree from "../../utils/custom-hooks/useTree";
-import { format, formatDistanceToNow, isAfter } from "date-fns";
+import { format, formatDistanceToNow, isAfter, subDays } from "date-fns";
 import { HiChevronLeft, HiTrash } from "react-icons/hi";
 import ConfirmModal from "../../components/reusable/ConfirmModal/ConfirmModal";
 
@@ -122,7 +122,8 @@ const TodoDetail = () => {
 
             <div
               className={`mt-5 flex justify-between ${
-                isAfter(new Date(), new Date(todo.dueDate)) && !todo.done
+                isAfter(subDays(new Date(), 1), new Date(todo.dueDate)) &&
+                !todo.done
                   ? "text-red-400"
                   : "text-black/70"
               } font-medium`}

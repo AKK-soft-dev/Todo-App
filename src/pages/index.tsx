@@ -23,7 +23,6 @@ const HomePage = () => {
   const prevIds = prevTodoIds.current;
   todoList.forEach((todo) => {
     const dueDate = new Date(todo.dueDate);
-    // If the task is completed and this component is rendered for fist time
     if (!todo.done || prevIds.includes(todo.id)) {
       if (isToday(dueDate)) {
         todayTodo.push(todo);
