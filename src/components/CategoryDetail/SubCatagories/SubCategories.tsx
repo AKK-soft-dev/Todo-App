@@ -134,25 +134,25 @@ const SubCategories = ({
                 <ul className="absolute w-[100px] divide-y-2 z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
                   <li
                     onClick={handleSelect("newest")}
-                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs cursor-pointer"
                   >
                     newest
                   </li>
                   <li
                     onClick={handleSelect("oldest")}
-                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs cursor-pointer"
                   >
                     oldest
                   </li>
                   <li
                     onClick={handleSelect("A - Z")}
-                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs cursor-pointer"
                   >
                     A - Z
                   </li>
                   <li
                     onClick={handleSelect("Z - A")}
-                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs"
+                    className="px-3 py-1 hover:bg-slate-200 duration-200 text-xs cursor-pointer"
                   >
                     Z - A
                   </li>

@@ -206,19 +206,19 @@ const TodoForm = (props: TodoFormPropsType) => {
                   <ul className="absolute w-[100px] z-30 top-full right-0 border border-black/60 bg-white text-start rounded shadow-md">
                     <li
                       onClick={handleSelect("low")}
-                      className="px-3 py-1 hover:bg-slate-200 duration-200"
+                      className="px-3 py-1 hover:bg-slate-200 duration-200 cursor-pointer"
                     >
                       low
                     </li>
                     <li
                       onClick={handleSelect("medium")}
-                      className="px-3 py-1 hover:bg-slate-200 duration-200"
+                      className="px-3 py-1 hover:bg-slate-200 duration-200 cursor-pointer"
                     >
                       medium
                     </li>
                     <li
                       onClick={handleSelect("high")}
-                      className="px-3 py-1 hover:bg-slate-200 duration-200"
+                      className="px-3 py-1 hover:bg-slate-200 duration-200 cursor-pointer"
                     >
                       high
                     </li>
