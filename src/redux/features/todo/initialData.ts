@@ -77,7 +77,7 @@ export const initialTodoData: EntityState<TodoType> = {
       parentId: "1WltZRVXg9g58xezsZDoe",
       level: "medium",
       createdAt: "10/13/2023",
-      dueDate: "05/11/2024",
+      dueDate: "05/10/2024",
       done: false,
     },
   },
