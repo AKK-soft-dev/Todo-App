@@ -66,7 +66,7 @@ export const initialTodoData: EntityState<TodoType> = {
       parentId: "1WltZRVXg9g58xezsZDoe",
       level: "high",
       createdAt: "10/14/2023",
-      dueDate: "10/23/2023",
+      dueDate: "04/29/2024",
       done: false,
     },
     a6_d5CzR5OrJiHe233qzg: {
@@ -77,7 +77,7 @@ export const initialTodoData: EntityState<TodoType> = {
       parentId: "1WltZRVXg9g58xezsZDoe",
       level: "medium",
       createdAt: "10/13/2023",
-      dueDate: "12/12/2023",
+      dueDate: "12/12/2024",
       done: false,
     },
   },
